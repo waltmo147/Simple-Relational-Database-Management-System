@@ -23,6 +23,8 @@ target/
 
 # Itellij files
 *.iml
+.idea/
+
 
 # Package Files #
 #*.jar
