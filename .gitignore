@@ -21,6 +21,9 @@ target/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Itellij files
+*.iml
+
 # Package Files #
 #*.jar
 *.war
