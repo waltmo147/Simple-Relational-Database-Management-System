@@ -1,7 +1,7 @@
 package operator;
 
 public class Tuple {
-    private String[] data; // string array to store data
+    private long[] data; // string array to store data
 
 
     /**
@@ -9,7 +9,11 @@ public class Tuple {
      * @param s
      */
     public Tuple(String s) {
-        data = s.split(",");
+        String[] sData = s.split(",");
+        data = new long[sData.length];
+        for(int i=0; i<sData.length; ++i){
+            data[i] = Long.parseLong(sData[i]);
+        }
     }
 
     /**
@@ -17,7 +21,7 @@ public class Tuple {
      * @param length
      */
     public Tuple(int length) {
-        data = new String[length];
+        data = new long[length];
     }
 
 
@@ -25,7 +29,7 @@ public class Tuple {
      * Overload constructor with data input
      * @param data
      */
-    public Tuple(String[] data) {
+    public Tuple(long[] data) {
         this.data = data;
     }
 
