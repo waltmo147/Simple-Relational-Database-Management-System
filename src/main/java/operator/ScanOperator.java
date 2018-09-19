@@ -38,7 +38,7 @@ public class ScanOperator extends Operator{
         }
         try{
             String s = readerPointer.readLine();
-            if(s.length() == 0) return tuple;
+            if(s == null) return tuple;
             tuple = new Tuple(s);
         }catch(IOException e){
             System.out.print("Met error when read line");
