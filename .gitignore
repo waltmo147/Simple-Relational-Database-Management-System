@@ -10,7 +10,7 @@ target/
 .vscode/
 
 # itellij
-.idea
+.idea/
 *.iml
 
 # Compiled class file
