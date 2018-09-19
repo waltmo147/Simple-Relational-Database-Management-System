@@ -9,6 +9,10 @@ target/
 # visual studio code
 .vscode/
 
+# itellij
+.idea/
+*.iml
+
 # Compiled class file
 *.class
 

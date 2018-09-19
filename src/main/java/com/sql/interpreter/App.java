@@ -18,6 +18,7 @@ public class App {
 
 	public static void main(String[] args) {
 		try {
+			// try
 			CCJSqlParser parser = new CCJSqlParser(new FileReader(queriesFile));
 			Statement statement;
 			while ((statement = parser.Statement()) != null) {
