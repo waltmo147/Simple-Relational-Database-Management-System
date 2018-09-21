@@ -32,5 +32,4 @@ public class Tuple {
     public Tuple(long[] data) {
         this.data = data;
     }
-
 }

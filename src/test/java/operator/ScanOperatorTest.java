@@ -12,6 +12,7 @@ public class ScanOperatorTest{
         File file = new File(tableFolder + tableName);
 
         Operator op = new ScanOperator(file);
+
         while(op.getNextTuple()!=null){
             System.out.println("read successfully");
         }
