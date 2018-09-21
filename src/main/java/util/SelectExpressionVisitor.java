@@ -7,22 +7,67 @@ import net.sf.jsqlparser.expression.operators.relational.*;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.SubSelect;
 
-public class SelectVisitor implements ExpressionVisitor {
+import java.util.*;
+import java.util.concurrent.DelayQueue;
+
+public class SelectExpressionVisitor implements ExpressionVisitor {
+
+    Catelog catelog;
+    Deque<String>
 
     @Override
     public void visit(AndExpression andExpression) {
+        // Todo
+
 
     }
 
     @Override
     public void visit(Column column) {
+        // Todo
+        String columnName = column.getWholeColumnName()
+        catelog.getCurrentSchema();
+
 
     }
 
     @Override
     public void visit(LongValue longValue) {
+        // Todo
 
     }
+
+    @Override
+    public void visit(EqualsTo equalsTo) {
+        // Todo
+    }
+
+    @Override
+    public void visit(NotEqualsTo notEqualsTo) {
+        // Todo
+    }
+
+    @Override
+    public void visit(GreaterThan greaterThan) {
+        // Todo
+    }
+
+    @Override
+    public void visit(GreaterThanEquals greaterThanEquals) {
+        // todo
+
+    }
+
+    @Override
+    public void visit(MinorThan minorThan) {
+        // Todo
+    }
+
+    @Override
+    public void visit(MinorThanEquals minorThanEquals) {
+        // Todo
+    }
+
 
     @Override
     public void visit(NullValue nullValue) {
@@ -105,16 +150,6 @@ public class SelectVisitor implements ExpressionVisitor {
     }
 
     @Override
-    public void visit(GreaterThan greaterThan) {
-
-    }
-
-    @Override
-    public void visit(GreaterThanEquals greaterThanEquals) {
-
-    }
-
-    @Override
     public void visit(InExpression inExpression) {
 
     }
@@ -126,21 +161,6 @@ public class SelectVisitor implements ExpressionVisitor {
 
     @Override
     public void visit(LikeExpression likeExpression) {
-
-    }
-
-    @Override
-    public void visit(MinorThan minorThan) {
-
-    }
-
-    @Override
-    public void visit(MinorThanEquals minorThanEquals) {
-
-    }
-
-    @Override
-    public void visit(NotEqualsTo notEqualsTo) {
 
     }
 
