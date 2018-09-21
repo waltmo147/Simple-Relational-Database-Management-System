@@ -33,4 +33,13 @@ public class Tuple {
         this.data = data;
     }
 
+    /**
+     * Get data by index
+     * @param index
+     * @return long
+     */
+    public long getDataAt(int index){
+        return data[index];
+    }
+
 }
