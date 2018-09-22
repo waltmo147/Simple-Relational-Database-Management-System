@@ -131,7 +131,7 @@ public class Catalog {
         return schemas.get(table);
     }
 
-    public int getIndexOfColumn(String colomn) {
-        return currentSchema.get(colomn);
+    public int getIndexOfColumn(String column) {
+        return currentSchema.get(column);
     }
 }
