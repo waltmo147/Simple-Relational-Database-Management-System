@@ -130,4 +130,8 @@ public class Catalog {
     public Map<String, Integer> getTableSchema(String table) {
         return schemas.get(table);
     }
+
+    public int getIndexOfColumn(String colomn) {
+        return currentSchema.get(colomn);
+    }
 }
