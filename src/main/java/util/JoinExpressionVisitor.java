@@ -54,19 +54,9 @@ import net.sf.jsqlparser.statement.select.SubSelect;
  *
  */
 public class JoinExpressionVisitor implements ExpressionVisitor {
-
-	private Stack<Long> valueStack; 
-	private Stack<Boolean> booleanStack;
-	private Stack<Boolean> isValidStack;
 	private Stack<Expression> expressionStack;
 
 	private Map<String, Integer> schemaMap;
-	private Map<String, String> aliasMap;
-	private Set<String> tableSet;
-
-	private Tuple tuple;
-
-	private boolean tupleRemain;
 	
 	/**
 	 * constructor, assigns the field to the arguments.
@@ -76,7 +66,7 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	 * @param hash
 	 */
 	public JoinExpressionVisitor() {
-		tupleRemain = true;
+		expressionStack = new Stack<>();
 		this.schemaMap = Catalog.getInstance().getCurrentSchema();
 	}
 	
