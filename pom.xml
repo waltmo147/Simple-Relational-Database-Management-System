@@ -23,8 +23,9 @@
     <dependency>
       <groupId>com.github.jsqlparser</groupId>
       <artifactId>jsqlparser</artifactId>
-      <version>1.2</version>
-      <scope>main</scope>
+      <version>0.9</version>
+      <scope>system</scope>
+	    <systemPath>${project.basedir}/JSqlParser/jsqlparser/jsqlparser.jar</systemPath>
     </dependency>
   </dependencies>
 </project>
