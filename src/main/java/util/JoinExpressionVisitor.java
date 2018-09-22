@@ -63,6 +63,8 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	private Set<String> tableSet;
 
 	private Tuple tuple;
+
+	private boolean tupleRemain;
 	
 	/**
 	 * constructor, assigns the field to the arguments.
@@ -72,6 +74,7 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	 * @param hash
 	 */
 	public JoinExpressionVisitor() {
+		tupleRemain = true;
 	}
 	
 	/** 
@@ -80,6 +83,12 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	 */
 	public boolean isTuple(){
 		return true;
+	}
+
+	private void updateIsValidStack(){
+		boolean leftValid = isValidStack.pop(), rightValid = isValidStack.pop();
+		isValidStack.push(leftValid && rightValid);
+		this.schemaMap = Catalog.getInstance().getCurrentSchema();
 	}
 
 	/**
@@ -104,130 +113,7 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	public void visit(LongValue node) {
 		// TODO Auto-generated method stub
 		valueStack.push(node.getValue());
-	}
-
-	/**
-	 * method that visit the and expression node.
-	 * if isValid is true, only traverse the right part.
-	 * else, make a post traverse of the tree.
-	 */
-	@Override
-	public void visit(AndExpression node) {
-		// TODO Auto-generated method stub
-		// check whether we only need to traverse the right part.
-		if(isValid){
-			isValid = false; // set it to false to make a full traverse of right part.
-			node.getRightExpression().accept(this);
-			isValid = true; // set it back to true for future use.
-		}
-		else{
-		    node.getLeftExpression().accept(this);
-		    node.getRightExpression().accept(this);
-		    // if we do not get the check, we may get an EmptyStackException
-		    // since we do not push boolean values on the stack
-		    // when the left node is a parenthesis node.
-		    if(!(node.getLeftExpression() instanceof Parenthesis)){
-		        boolean value1 = stack2.pop();
-		        boolean value2 = stack2.pop();
-		        stack2.push(value1&value2);
-		    }
-		}
-	}
-
-	/**
-	 * visit method for the equals to node.
-	 * post traverse the node, pop two long values out of the stack1.
-	 * check whether the two values are the same and push the result
-	 * on the stack2.
-	 * @param an equals to expression node.
-	 */
-	@Override
-	public void visit(EqualsTo node) {
-		// TODO Auto-generated method stub
-		node.getLeftExpression().accept(this);
-		node.getRightExpression().accept(this);
-		long num1 = stack1.pop(), num2 = stack1.pop();
-		stack2.push(num1==num2);
-	}
-
-	/**
-	 * visit method for the greater than node.
-	 * post traverse the node, pop two long values out of the stack1.
-	 * check whether the second one popped is greater than the first
-	 * one and push the result on the stack2.
-	 * @param an greater expression node.
-	 */
-	@Override
-	public void visit(GreaterThan node) {
-		// TODO Auto-generated method stub
-		node.getLeftExpression().accept(this);
-		node.getRightExpression().accept(this);
-		long num1 = stack1.pop(), num2 = stack1.pop();
-		stack2.push(num2>num1);
-	}
-
-	/**
-	 * visit method for the greater than equals node.
-	 * post traverse the node, pop two long values out of the stack1.
-	 * check whether the second one popped is greater than or equals 
-	 * to the first one and push the result on the stack2.
-	 * @param an greater than equals expression node.
-	 */
-	@Override
-	public void visit(GreaterThanEquals node) {
-		// TODO Auto-generated method stub
-		node.getLeftExpression().accept(this);
-		node.getRightExpression().accept(this);
-		long num1 = stack1.pop(), num2 = stack1.pop();
-		stack2.push(num2>=num1);
-	}
-
-	/**
-	 * visit method for the minor than node.
-	 * post traverse the node, pop two long values out of the stack1.
-	 * check whether the second one popped is minor than 
-	 * to the first one and push the result on the stack2.
-	 * @param a minor than expression node.
-	 */
-	@Override
-	public void visit(MinorThan node) {
-		// TODO Auto-generated method stub
-		node.getLeftExpression().accept(this);
-		node.getRightExpression().accept(this);
-		long num1 = stack1.pop(), num2 = stack1.pop();
-		stack2.push(num2<num1);
-	}
-
-	/**
-	 * visit method for the minor than equals node.
-	 * post traverse the node, pop two long values out of the stack1.
-	 * check whether the second one popped is minor than equals
-	 * to the first one and push the result on the stack2.
-	 * @param a minor than equals expression node.
-	 */
-	@Override
-	public void visit(MinorThanEquals node) {
-		// TODO Auto-generated method stub
-		node.getLeftExpression().accept(this);
-		node.getRightExpression().accept(this);
-		long num1 = stack1.pop(), num2 = stack1.pop();
-		stack2.push(num2<=num1);
-	}
-
-	/**
-	 * visit method for the equals to node.
-	 * post traverse the node, pop two long values out of the stack1.
-	 * check whether the two values are not the same and push the result
-	 * on the stack2.
-	 * @param an not equals to expression node.
-	 */
-	@Override
-	public void visit(NotEqualsTo node) {
-		// TODO Auto-generated method stub
-		node.getLeftExpression().accept(this);
-		node.getRightExpression().accept(this);
-		long num1 = stack1.pop(), num2 = stack1.pop();
-		stack2.push(num1!=num2);
+		isValidStack.push(true);
 	}
 
 	/**
@@ -249,6 +135,12 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 			String schemaKey = tableAlias+'.'+fieldName;
 			if(schemaMap.containsKey(schemaKey)){
 				valueStack.push(tuple.getDataAt(schemaMap.get(schemaKey)));
+				isValidStack.push(true);
+			}
+			else{
+				isValidStack.push(false);
+				long temp = 0;
+				valueStack.push(temp);
 			}
 
 		}
@@ -256,20 +148,119 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 			// A
 			// need to find which table the field belongs to
 		}
-		
+	}
 
-		String str = node.getWholeColumnName();
-		String[] dummy = str.split("\\.");
-		str = hash.get(dummy[0]) + "." + dummy[1];
-		// reset the string to make it available for searching in catalogs.
-		String temp = node.getTable().getName();
-		int index = catalog.getColumn(str);
-		if(map2.get(temp)==null){
-			stillLeft = false;
-			stack1.push((long) 0);
-			return;
-		}
-		stack1.push(map2.get(temp).getData(index));	
+	/**
+	 * method that visit the and expression node.
+	 * if isValid is true, only traverse the right part.
+	 * else, make a post traverse of the tree.
+	 */
+	@Override
+	public void visit(AndExpression node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * visit method for the equals to node.
+	 * post traverse the node, pop two long values out of the stack1.
+	 * check whether the two values are the same and push the result
+	 * on the stack2.
+	 * @param an equals to expression node.
+	 */
+	@Override
+	public void visit(EqualsTo node) {
+		// TODO Auto-generated method stub
+		node.getLeftExpression().accept(this);
+		node.getRightExpression().accept(this);
+		long num1 = valueStack.pop(), num2 = valueStack.pop();
+		booleanStack.push(num1 == num2);
+		updateIsValidStack();
+	}
+
+	/**
+	 * visit method for the greater than node.
+	 * post traverse the node, pop two long values out of the stack1.
+	 * check whether the second one popped is greater than the first
+	 * one and push the result on the stack2.
+	 * @param an greater expression node.
+	 */
+	@Override
+	public void visit(GreaterThan node) {
+		// TODO Auto-generated method stub
+		node.getLeftExpression().accept(this);
+		node.getRightExpression().accept(this);
+		long num1 = valueStack.pop(), num2 = valueStack.pop();
+		booleanStack.push(num1 >= num2);
+		updateIsValidStack();
+	}
+
+	/**
+	 * visit method for the greater than equals node.
+	 * post traverse the node, pop two long values out of the stack1.
+	 * check whether the second one popped is greater than or equals 
+	 * to the first one and push the result on the stack2.
+	 * @param an greater than equals expression node.
+	 */
+	@Override
+	public void visit(GreaterThanEquals node) {
+		// TODO Auto-generated method stub
+		node.getLeftExpression().accept(this);
+		node.getRightExpression().accept(this);
+		long num1 = valueStack.pop(), num2 = valueStack.pop();
+		booleanStack.push(num1 >= num2);
+		updateIsValidStack();
+	}
+
+	/**
+	 * visit method for the minor than node.
+	 * post traverse the node, pop two long values out of the stack1.
+	 * check whether the second one popped is minor than 
+	 * to the first one and push the result on the stack2.
+	 * @param a minor than expression node.
+	 */
+	@Override
+	public void visit(MinorThan node) {
+		// TODO Auto-generated method stub
+		node.getLeftExpression().accept(this);
+		node.getRightExpression().accept(this);
+		long num1 = valueStack.pop(), num2 = valueStack.pop();
+		booleanStack.push(num1 < num2);
+		updateIsValidStack();
+	}
+
+	/**
+	 * visit method for the minor than equals node.
+	 * post traverse the node, pop two long values out of the stack1.
+	 * check whether the second one popped is minor than equals
+	 * to the first one and push the result on the stack2.
+	 * @param a minor than equals expression node.
+	 */
+	@Override
+	public void visit(MinorThanEquals node) {
+		// TODO Auto-generated method stub
+		node.getLeftExpression().accept(this);
+		node.getRightExpression().accept(this);
+		long num1 = valueStack.pop(), num2 = valueStack.pop();
+		booleanStack.push(num1 <= num2);
+		updateIsValidStack();
+	}
+
+	/**
+	 * visit method for the equals to node.
+	 * post traverse the node, pop two long values out of the stack1.
+	 * check whether the two values are not the same and push the result
+	 * on the stack2.
+	 * @param an not equals to expression node.
+	 */
+	@Override
+	public void visit(NotEqualsTo node) {
+		// TODO Auto-generated method stub
+		node.getLeftExpression().accept(this);
+		node.getRightExpression().accept(this);
+		long num1 = valueStack.pop(), num2 = valueStack.pop();
+		booleanStack.push(num1 != num2);
+		updateIsValidStack();
 	}
 	
 	@Override
