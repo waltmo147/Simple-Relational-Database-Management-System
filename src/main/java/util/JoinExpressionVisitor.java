@@ -11,6 +11,7 @@ import net.sf.jsqlparser.expression.AnyComparisonExpression;
 import net.sf.jsqlparser.expression.CaseExpression;
 import net.sf.jsqlparser.expression.DateValue;
 import net.sf.jsqlparser.expression.DoubleValue;
+import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.ExpressionVisitor;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.expression.InverseExpression;
@@ -57,6 +58,7 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	private Stack<Long> valueStack; 
 	private Stack<Boolean> booleanStack;
 	private Stack<Boolean> isValidStack;
+	private Stack<Expression> expressionStack;
 
 	private Map<String, Integer> schemaMap;
 	private Map<String, String> aliasMap;
@@ -75,20 +77,20 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	 */
 	public JoinExpressionVisitor() {
 		tupleRemain = true;
+		this.schemaMap = Catalog.getInstance().getCurrentSchema();
 	}
 	
 	/** 
 	 * check whether this tuple is a valid one.
 	 * @return the state "this tuple is valid."
 	 */
-	public boolean isTuple(){
-		return true;
-	}
-
-	private void updateIsValidStack(){
-		boolean leftValid = isValidStack.pop(), rightValid = isValidStack.pop();
-		isValidStack.push(leftValid && rightValid);
-		this.schemaMap = Catalog.getInstance().getCurrentSchema();
+	public Expression getExpression(){
+		if(expressionStack.size()==1){
+			return expressionStack.peek();
+		}
+		else{
+			return null;
+		}
 	}
 
 	/**
@@ -112,8 +114,7 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	@Override
 	public void visit(LongValue node) {
 		// TODO Auto-generated method stub
-		valueStack.push(node.getValue());
-		isValidStack.push(true);
+		expressionStack.push(node);
 	}
 
 	/**
@@ -134,13 +135,10 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 			String tableAlias = fieldSplit[0], fieldName = fieldSplit[1];
 			String schemaKey = tableAlias+'.'+fieldName;
 			if(schemaMap.containsKey(schemaKey)){
-				valueStack.push(tuple.getDataAt(schemaMap.get(schemaKey)));
-				isValidStack.push(true);
+				expressionStack.push(node);
 			}
 			else{
-				isValidStack.push(false);
-				long temp = 0;
-				valueStack.push(temp);
+				expressionStack.push(null);
 			}
 
 		}
@@ -158,6 +156,40 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	@Override
 	public void visit(AndExpression node) {
 		// TODO Auto-generated method stub
+		node.getLeftExpression().accept(this);
+		node.getRightExpression().accept(this);
+
+		Expression expLeft = expressionStack.pop(), expRight = expressionStack.pop();
+		if(expLeft != null && expRight != null){
+			Expression temp = new AndExpression(expLeft, expRight);
+			expressionStack.push(temp);
+		}
+		else if(expLeft != null){
+			expressionStack.push(expLeft);
+		}
+		else if(expRight != null){
+			expressionStack.push(expRight);
+		}
+		else{
+			expressionStack.push(null);
+		}
+
+	}
+
+	@Override
+	public void visit(OrExpression node) {
+		// TODO Auto-generated method stub
+		node.getLeftExpression().accept(this);
+		node.getRightExpression().accept(this);
+
+		Expression expLeft = expressionStack.pop(), expRight = expressionStack.pop();
+		if(expLeft != null && expRight != null){
+			Expression temp = new AndExpression(expLeft, expRight);
+			expressionStack.push(temp);
+		}
+		else{
+			expressionStack.push(null);
+		}
 		
 	}
 
@@ -173,9 +205,14 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 		// TODO Auto-generated method stub
 		node.getLeftExpression().accept(this);
 		node.getRightExpression().accept(this);
-		long num1 = valueStack.pop(), num2 = valueStack.pop();
-		booleanStack.push(num1 == num2);
-		updateIsValidStack();
+
+		Expression expLeft = expressionStack.pop(), expRight = expressionStack.pop();
+		if(expLeft!=null && expRight!=null){
+			expressionStack.push(node);
+		}
+		else{
+			expressionStack.push(null);
+		}
 	}
 
 	/**
@@ -190,9 +227,14 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 		// TODO Auto-generated method stub
 		node.getLeftExpression().accept(this);
 		node.getRightExpression().accept(this);
-		long num1 = valueStack.pop(), num2 = valueStack.pop();
-		booleanStack.push(num1 >= num2);
-		updateIsValidStack();
+
+		Expression expLeft = expressionStack.pop(), expRight = expressionStack.pop();
+		if(expLeft!=null && expRight!=null){
+			expressionStack.push(node);
+		}
+		else{
+			expressionStack.push(null);
+		}
 	}
 
 	/**
@@ -207,9 +249,14 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 		// TODO Auto-generated method stub
 		node.getLeftExpression().accept(this);
 		node.getRightExpression().accept(this);
-		long num1 = valueStack.pop(), num2 = valueStack.pop();
-		booleanStack.push(num1 >= num2);
-		updateIsValidStack();
+
+		Expression expLeft = expressionStack.pop(), expRight = expressionStack.pop();
+		if(expLeft!=null && expRight!=null){
+			expressionStack.push(node);
+		}
+		else{
+			expressionStack.push(null);
+		}
 	}
 
 	/**
@@ -224,9 +271,14 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 		// TODO Auto-generated method stub
 		node.getLeftExpression().accept(this);
 		node.getRightExpression().accept(this);
-		long num1 = valueStack.pop(), num2 = valueStack.pop();
-		booleanStack.push(num1 < num2);
-		updateIsValidStack();
+
+		Expression expLeft = expressionStack.pop(), expRight = expressionStack.pop();
+		if(expLeft!=null && expRight!=null){
+			expressionStack.push(node);
+		}
+		else{
+			expressionStack.push(null);
+		}
 	}
 
 	/**
@@ -241,9 +293,14 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 		// TODO Auto-generated method stub
 		node.getLeftExpression().accept(this);
 		node.getRightExpression().accept(this);
-		long num1 = valueStack.pop(), num2 = valueStack.pop();
-		booleanStack.push(num1 <= num2);
-		updateIsValidStack();
+
+		Expression expLeft = expressionStack.pop(), expRight = expressionStack.pop();
+		if(expLeft!=null && expRight!=null){
+			expressionStack.push(node);
+		}
+		else{
+			expressionStack.push(null);
+		}
 	}
 
 	/**
@@ -258,9 +315,14 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 		// TODO Auto-generated method stub
 		node.getLeftExpression().accept(this);
 		node.getRightExpression().accept(this);
-		long num1 = valueStack.pop(), num2 = valueStack.pop();
-		booleanStack.push(num1 != num2);
-		updateIsValidStack();
+
+		Expression expLeft = expressionStack.pop(), expRight = expressionStack.pop();
+		if(expLeft!=null && expRight!=null){
+			expressionStack.push(node);
+		}
+		else{
+			expressionStack.push(null);
+		}
 	}
 	
 	@Override
@@ -339,12 +401,6 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 
 	@Override
 	public void visit(Subtraction node) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void visit(OrExpression node) {
 		// TODO Auto-generated method stub
 		
 	}
