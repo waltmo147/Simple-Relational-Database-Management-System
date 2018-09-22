@@ -12,8 +12,10 @@ import java.util.concurrent.DelayQueue;
 
 public class SelectExpressionVisitor implements ExpressionVisitor {
 
-    Catelog catelog;
-    Deque<String>
+    private Catalog catalog;
+    private Deque<String> data;
+    private Deque<Boolean> value;
+    private Tuple<String> currentTuple;
 
     @Override
     public void visit(AndExpression andExpression) {
@@ -26,7 +28,9 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
     public void visit(Column column) {
         // Todo
         String columnName = column.getWholeColumnName()
-        catelog.getCurrentSchema();
+        catalog.getCurrentSchema();
+        int ind = catalog.getIndexofColumn(s);
+        values.push(tuple.getData(index));
 
 
     }
