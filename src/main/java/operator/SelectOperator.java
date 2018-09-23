@@ -25,6 +25,9 @@ public class SelectOperator extends Operator{
         currentSchema = operator.getSchema();
     }
 
+    /**
+     * @return the next tuple filtered by the Select Operator
+     */
     @Override
     public Tuple getNextTuple() {
         Tuple next = prevOp.getNextTuple();
@@ -41,16 +44,17 @@ public class SelectOperator extends Operator{
         return next;
     }
 
+    /**
+     * reset the select operator would be resetting the previous operator
+     */
     @Override
     public void reset() {
         prevOp.reset();
     }
 
-    @Override
-    public void dump(int i) {
-
-    }
-
+    /**
+     * @return the schema of select operator which is the same with the previous schema
+     */
     @Override
     public Map<String, Integer> getSchema() {
         return currentSchema;

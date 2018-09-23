@@ -76,36 +76,6 @@ public class SortOperator extends Operator{
     }
 
     /**
-     * for debugging, get all the tuples at once and put them in a file.
-     * @param i the index of the output file.
-     */
-    @Override
-    public void dump(int i) {
-        // TODO Auto-generated method stub
-        String path = Catalog.getInstance().getOutputPath();
-        BufferedWriter output;
-        try{
-            File file = new File(path + i);
-            StringBuilder sb = new StringBuilder();
-            output = new BufferedWriter(new FileWriter(file));
-            Tuple tuple = getNextTuple();
-
-            while(tuple != null){
-                sb.append(tuple.toString());
-                sb.append("\n");
-                System.out.println(tuple);
-                tuple = getNextTuple();
-            }
-            output.write(sb.toString());
-            output.close();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        reset();
-    }
-
-
-    /**
      * For distinct operator
      * @return sorted Tuple list
      */

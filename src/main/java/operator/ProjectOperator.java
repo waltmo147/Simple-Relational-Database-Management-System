@@ -35,6 +35,9 @@ public class ProjectOperator extends Operator {
         }
     }
 
+    /**
+     * @return the next tuple selected by the project operator
+     */
     @Override
     public Tuple getNextTuple() {
         Tuple next = prevOp.getNextTuple();
@@ -49,35 +52,17 @@ public class ProjectOperator extends Operator {
         return next;
     }
 
+    /**
+     * reset the project operator would be resetting the previous operator
+     */
     @Override
     public void reset() {
         prevOp.reset();
     }
 
-    @Override
-    public void dump(int i) {
-        // TODO Auto-generated method stub
-        String path = Catalog.getInstance().getOutputPath();
-        BufferedWriter output;
-        try{
-            File file = new File(path + i);
-            StringBuilder sb = new StringBuilder();
-            output = new BufferedWriter(new FileWriter(file));
-            Tuple tuple = getNextTuple();
-            while(tuple != null){
-                sb.append(tuple.toString());
-                sb.append("\n");
-                System.out.println(tuple);
-                tuple = getNextTuple();
-            }
-            output.write(sb.toString());
-            output.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        reset();
-    }
-
+    /**
+     * @return the current schema of project operator
+     */
     @Override
     public Map<String, Integer> getSchema() {
         return currentSchema;
