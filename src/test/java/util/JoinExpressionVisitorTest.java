@@ -34,6 +34,8 @@ public class JoinExpressionVisitorTest{
         Catalog.getInstance().setAliases("Boats");
         Catalog.getInstance().setAliases("Reserves");
 
+        Map<String, Integer> a = Catalog.getInstance().getCurrentSchema();
+
         String whereClause = "Sailors.A = Boats.D And Sailors.A = Reserves.G";
         try{
             CCJSqlParser parser = new CCJSqlParser(new FileReader("test.sql"));
@@ -46,7 +48,7 @@ public class JoinExpressionVisitorTest{
             JoinExpressionVisitor joinExpress = new JoinExpressionVisitor();
             expr.accept(joinExpress);
             Expression output = joinExpress.getExpression();
-            int a =1;
+            int aa =1;
         }catch(Exception e){
             e.printStackTrace();
         }
