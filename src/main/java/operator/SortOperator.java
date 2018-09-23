@@ -1,5 +1,6 @@
 package operator;
 
+import net.sf.jsqlparser.statement.select.OrderByElement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import util.Catalog;
 
@@ -24,7 +25,7 @@ public class SortOperator extends Operator{
     private Map<String, Integer> schema;
 
     public SortOperator(Operator operator, PlainSelect plainSelect) {
-        tupleList = new ArrayList<Tuple>();
+        tupleList = new ArrayList<>();
         this.plainSelect = plainSelect;
         this.schema = operator.getSchema();
 
@@ -101,19 +102,27 @@ public class SortOperator extends Operator{
 
 
     /**
+     * For distinct operator
+     * @return sorted Tuple list
+     */
+    public List<Tuple> getTupleList() {
+        return tupleList;
+    }
+
+    /**
      * comparator to sort tuples
      */
     class TupleComparator implements Comparator<Tuple> {
 
-        List<Integer> order = plainSelect.getOrderByElements();
+        List<OrderByElement> order = plainSelect.getOrderByElements();
 
         @Override
         public int compare(Tuple t1, Tuple t2) {
             // TODO Auto-generated method stub
             // sort tuples from the order from sql query.
             for (int i = 0; i < order.size(); i++) {
-                String str = order.get(i).toString();
-                int index = Catalog.getInstance().getIndexOfColumn(str);
+                String column = order.get(i).toString();
+                int index = schema.get(column);
                 if (t1.getDataAt(index) > t2.getDataAt(index)) {
                     return 1;
                 }
