@@ -28,6 +28,9 @@ public class Catalog {
             String s = br.readLine();
             while(s != null) {
                 String[] str = s.split("\\s+");
+                // initiate aliases table map
+                aliases.put(str[0], str[0]);
+
                 files.put(str[0], Constants.DATA_PATH + str[0]);
                 Map<String, Integer> schema = new HashMap<>();
 
@@ -38,8 +41,8 @@ public class Catalog {
                 schemas.put(str[0], schema);
                 s = br.readLine();
             }
-
             br.close();
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Files not found!");
