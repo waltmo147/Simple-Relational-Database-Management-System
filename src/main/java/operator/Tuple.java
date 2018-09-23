@@ -42,4 +42,12 @@ public class Tuple {
         return data[index];
     }
 
+    /**
+     * get the length of data
+     * @return int
+     */
+    public int getDataLength(){
+        return data.length;
+    }
+
 }

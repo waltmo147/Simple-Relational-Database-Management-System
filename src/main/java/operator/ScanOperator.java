@@ -14,12 +14,12 @@ public class ScanOperator extends Operator{
     private RandomAccessFile readerPointer;
     private Map<String, Integer> schema;
 
-    public ScanOperator(PlainSelect ps, File file){
+    public ScanOperator(PlainSelect plainSelect, File file){
         this.op = null;
         this.file = file;
         initReaderPointer();
 
-        String fromItem = ps.getFromItem().toString();
+        String fromItem = plainSelect.getFromItem().toString();
         Catalog.getInstance().setAliases(fromItem);
         Catalog.getInstance().updateCurrentSchema(getAlias(fromItem));
 
@@ -27,12 +27,12 @@ public class ScanOperator extends Operator{
 
     }
 
-    public ScanOperator(Operator op, PlainSelect ps, File file){
+    public ScanOperator(Operator op, PlainSelect plainSelect, File file){
         this.op = op;
         this.file = file;
         initReaderPointer();
         
-        String fromItem = ps.getFromItem().toString();
+        String fromItem = plainSelect.getFromItem().toString();
         Catalog.getInstance().setAliases(fromItem);
         Catalog.getInstance().updateCurrentSchema(getAlias(fromItem));
 
@@ -64,6 +64,11 @@ public class ScanOperator extends Operator{
      */
     @Override
     public void reset(){
+        try{
+			readerPointer.seek(0);
+		}catch(IOException e){
+			System.out.println("Files not found.");
+		}
     }
 
     /**
