@@ -32,12 +32,14 @@ public class Handler {
             System.err.println("Exception occurred during parsing");
             e.printStackTrace();
         }
+    }
+
      /**
      * consturct a left deep join query plan
      * @param plainSelect
      * @return
      */
-    public Operator constructQueryPlan(PlainSelect plainSelect){
+    public static Operator constructQueryPlan(PlainSelect plainSelect){
         int tableCount;
         Operator opLeft;
         if(plainSelect.getJoins() == null){
