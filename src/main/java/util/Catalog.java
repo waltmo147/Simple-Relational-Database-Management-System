@@ -111,6 +111,13 @@ public class Catalog {
     }
 
     /**
+     * @return sql queries file path
+     */
+    public String getSqlQueriesPath() {
+        return Constants.SQLQURIES_PATH;
+    }
+
+    /**
      * to set aliases to deal with the occasional failure of sqlparser
      * @param str the str parsed by sqlparser
      */
