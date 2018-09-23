@@ -23,19 +23,25 @@ public class ProjectOperator extends Operator {
         prevOp = operator;
         selectItems = plainSelect.getSelectItems();
         // yet did not handle cases: select A,D from S, B
-        Map<String, Integer> oldSchema = operator.getSchema();
-        currentSchema = new HashMap<>();
-        for (SelectItem selectItem : selectItems) {
-            currentSchema.put(selectItem.toString(),
-                    oldSchema.get(selectItem.toString()));
+        if (selectItems.get(0).toString() == "*") {
+            currentSchema = operator.getSchema();
+        } else {
+            Map<String, Integer> oldSchema = operator.getSchema();
+            currentSchema = new HashMap<>();
+            for (SelectItem selectItem : selectItems) {
+                currentSchema.put(selectItem.toString(),
+                        oldSchema.get(selectItem.toString()));
+            }
         }
-
     }
 
+    /**
+     * @return the next tuple selected by the project operator
+     */
     @Override
     public Tuple getNextTuple() {
         Tuple next = prevOp.getNextTuple();
-        if (next != null) {
+        if (next != null && currentSchema != prevOp.getSchema()) {
             long[] data = new long[currentSchema.size()];
             int i=0;
             for (Integer ind: currentSchema.values()) {
@@ -46,35 +52,17 @@ public class ProjectOperator extends Operator {
         return next;
     }
 
+    /**
+     * reset the project operator would be resetting the previous operator
+     */
     @Override
     public void reset() {
         prevOp.reset();
     }
 
-    @Override
-    public void dump(int i) {
-        // TODO Auto-generated method stub
-        String path = Catalog.getInstance().getOutputPath();
-        BufferedWriter output;
-        try{
-            File file = new File(path + i);
-            StringBuilder sb = new StringBuilder();
-            output = new BufferedWriter(new FileWriter(file));
-            Tuple tuple = getNextTuple();
-            while(tuple != null){
-                sb.append(tuple.toString());
-                sb.append("\n");
-                System.out.println(tuple);
-                tuple = getNextTuple();
-            }
-            output.write(sb.toString());
-            output.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        reset();
-    }
-
+    /**
+     * @return the current schema of project operator
+     */
     @Override
     public Map<String, Integer> getSchema() {
         return currentSchema;
