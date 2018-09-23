@@ -12,30 +12,28 @@ import util.Catalog;
 import java.io.File;
 import java.io.StringReader;
 
+import static org.junit.Assert.assertEquals;
+
 public class ProjectOperatorTest {
 
     @Test
-    public void getNextTuple() {
-        String statement = "SELECT * FROM Sailors S WHERE S.A <= 3;";
+    public void getNextTuple() throws Exception {
+
+        String tableName = "Boats";
+        String tableFolder = "Samples/samples/input/db/data/";
+        File file = new File(tableFolder + tableName);
+
+        String statement = "SELECT BT.E, BT.F FROM Boats AS BT WHERE BT.E = 9;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
-        try{
-            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager
-                    .parse(new StringReader(statement))).getSelectBody();
-            System.out.println("plainSelect: ");
-
-            Operator op = new ScanOperator(plainSelect, 0);
-            Catalog catalog = Catalog.getInstance();
-            System.out.println(catalog.getCurrentSchema());
-            Tuple currentTuple = op.getNextTuple();
-            FromItem fromItem = plainSelect.getFromItem();
-            System.out.println("From item is " + fromItem);
-            Expression whereEx = plainSelect.getWhere();
-            System.out.println("Where expression is " + whereEx);
-            int index = op.getSchema().get("S.A");
-            System.out.println(index);
-
-        }catch(Exception e){
-            e.printStackTrace();
+        PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.
+                parse(new StringReader(statement))).getSelectBody();
+        Operator scanOp = new ScanOperator(plainSelect, 0);
+        Operator selectOp = new SelectOperator(scanOp, plainSelect);
+        Operator projectOp = new ProjectOperator(selectOp, plainSelect);
+        Tuple tuple = projectOp.getNextTuple();
+        while(tuple != null){
+            assertEquals(9, tuple.getDataAt(1));
+            tuple = selectOp.getNextTuple();
         }
     }
 
@@ -48,6 +46,18 @@ public class ProjectOperatorTest {
     }
 
     @Test
-    public void getSchema() {
+    public void getSchema() throws Exception{
+        String tableName = "Boats";
+        String tableFolder = "Samples/samples/input/db/data/";
+        File file = new File(tableFolder + tableName);
+
+        String statement = "SELECT BT.E, BT.F FROM Boats AS BT WHERE BT.E = 9;";
+        CCJSqlParserManager parserManager = new CCJSqlParserManager();
+        PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.
+                parse(new StringReader(statement))).getSelectBody();
+        Operator scanOp = new ScanOperator(plainSelect, file);
+        Operator selectOp = new SelectOperator(scanOp, plainSelect);
+        Operator projectOp = new ProjectOperator(selectOp, plainSelect);
+        System.out.println(projectOp.getSchema());
     }
 }
