@@ -21,7 +21,7 @@ public class ScanOperator extends Operator{
 
         String fromItem = ps.getFromItem().toString();
         Catalog.getInstance().setAliases(fromItem);
-        Catalog.getInstance().setCurrentSchema(getAlias(fromItem));
+        Catalog.getInstance().updateCurrentSchema(getAlias(fromItem));
 
         this.schema = Catalog.getInstance().getCurrentSchema();
 
@@ -34,7 +34,7 @@ public class ScanOperator extends Operator{
         
         String fromItem = ps.getFromItem().toString();
         Catalog.getInstance().setAliases(fromItem);
-        Catalog.getInstance().setCurrentSchema(getAlias(fromItem));
+        Catalog.getInstance().updateCurrentSchema(getAlias(fromItem));
 
         this.schema = Catalog.getInstance().getCurrentSchema();
 
@@ -95,7 +95,7 @@ public class ScanOperator extends Operator{
             return "";
         }
         else{
-            return strs[strs.length-1];
+            return strs[strs.length - 1];
         }
     }
 }

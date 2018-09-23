@@ -1,4 +1,5 @@
-package operator;
-
-public class DuplicateEliminationOperator {
-}
+//package operator;
+//
+//public class DuplicateEliminationOperator extends Operator{
+//
+//}

@@ -14,7 +14,7 @@ public class CatalogTest {
     @Test
     public void getInstance() throws Exception {
         assertEquals("Samples/samples/input/db/data/Sailors", instance.getDataPath("Sailors"));
-        instance.setCurrentSchema("Sailors");
+        instance.updateCurrentSchema("Sailors");
         assertEquals(new Integer(1), instance.getCurrentSchema().get("Sailors.B"));
     }
 
