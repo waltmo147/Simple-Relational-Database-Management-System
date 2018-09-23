@@ -14,13 +14,13 @@ import java.util.concurrent.DelayQueue;
 
 public class SelectExpressionVisitor implements ExpressionVisitor {
 
-    private Catalog catalog;
+    private Map<String, Integer> currentSchema;
     private Deque<Long> data;
     private Deque<Boolean> values;
     private Tuple currentTuple;
 
-    public SelectExpressionVisitor(Tuple tuple) {
-        catalog = Catalog.getInstance();
+    public SelectExpressionVisitor(Tuple tuple, Map<String, Integer> schema) {
+        currentSchema = schema;
         data = new LinkedList<>();
         values = new LinkedList<>();
         currentTuple = tuple;
@@ -50,7 +50,8 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
     public void visit(Column column) {
         // Todo
         String columnName = column.getWholeColumnName();
-        int ind = catalog.getIndexOfColumn(columnName);
+        // int ind = catalog.getIndexOfColumn(columnName);
+        int ind = currentSchema.get(columnName);
         data.push(currentTuple.getDataAt(ind));
     }
 

@@ -53,7 +53,7 @@ public class SelectExpressionVisitorTest {
             System.out.println("Where expression is " + whereEx);
 
             while(currentTuple != null){
-                visitor = new SelectExpressionVisitor(currentTuple);
+                visitor = new SelectExpressionVisitor(currentTuple, op.getSchema());
                 if (whereEx != null) {
                     whereEx.accept(visitor);
                     assertEquals(true, visitor.getResult());

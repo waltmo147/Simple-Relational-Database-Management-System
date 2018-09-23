@@ -20,7 +20,7 @@ public class SelectOperator extends Operator{
         Tuple next = prevOp.getNextTuple();
         if (expression != null) {
             while (next != null) {
-                SelectExpressionVisitor sv = new SelectExpressionVisitor(next);
+                SelectExpressionVisitor sv = new SelectExpressionVisitor(next, prevOp.getSchema());
                 expression.accept(sv);
                 if (sv.getResult() == true) {
                     break;
