@@ -11,7 +11,7 @@ public class Tuple {
     public Tuple(String s) {
         String[] sData = s.split(",");
         data = new long[sData.length];
-        for(int i=0; i<sData.length; ++i){
+        for(int i = 0; i < sData.length; ++i){
             data[i] = Long.parseLong(sData[i]);
         }
     }
@@ -40,6 +40,14 @@ public class Tuple {
      */
     public long getDataAt(int index){
         return data[index];
+    }
+
+    /**
+     * get the length of data
+     * @return int
+     */
+    public int getDataLength(){
+        return data.length;
     }
 
 }
