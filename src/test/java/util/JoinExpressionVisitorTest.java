@@ -1,7 +1,12 @@
 package util;
 
+import operator.ScanOperator;
+import operator.SelectOperator;
+import operator.JoinOperator;
+import operator.Operator;
+import operator.Tuple;
+
 import org.junit.Test;
-import util.JoinExpressionVisitor;
 import java.io.File;
 import java.io.StringReader;
 import java.util.HashMap;
@@ -37,7 +42,7 @@ public class JoinExpressionVisitorTest{
 
         Map<String, Integer> a = Catalog.getInstance().getCurrentSchema();
 
-        String whereClause = "Sailors.A = Boats.D And Sailors.A = Reserves.G";
+        //String whereClause = "Sailors.A = Boats.D And Sailors.A = Reserves.G";
 
         String statement =  "SELECT * FROM Sailors, Reserves, Boats WHERE Sailors.A = Boats.D And Sailors.A = Reserves.G;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
@@ -45,7 +50,7 @@ public class JoinExpressionVisitorTest{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
             Expression expr = plainSelect.getWhere();
 
-            JoinExpressionVisitor joinExpress = new JoinExpressionVisitor();
+            JoinExpressionVisitor joinExpress = new JoinExpressionVisitor(schemaMap);
             expr.accept(joinExpress);
             Expression output = joinExpress.getExpression();
             int aa =1;
@@ -53,6 +58,39 @@ public class JoinExpressionVisitorTest{
             e.printStackTrace();
         }
 
-
     }
+
+    @Test
+    public void testWhereAndJoin(){
+        String statement =  "SELECT * FROM Sailors, Reserves, Boats WHERE Reserves.G = Boats.D And Sailors.A = Reserves.G;";
+        CCJSqlParserManager parserManager = new CCJSqlParserManager();
+        try{
+            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
+            File file1 = getTargetFileFromString(plainSelect.getFromItem().toString());
+            File file2 = getTargetFileFromString(plainSelect.getJoins().get(0).toString());
+            File file3 = getTargetFileFromString(plainSelect.getJoins().get(1).toString());
+            Operator op1 = new ScanOperator(plainSelect, file1);
+            Operator op2 = new ScanOperator(plainSelect, file2);
+            Operator op3 = new JoinOperator(op1, op2, plainSelect);
+            Operator op4 = new SelectOperator(op3, plainSelect);
+            Operator op5 = new ScanOperator(plainSelect, file3);
+            Operator op6 = new JoinOperator(op4, op5, plainSelect);
+            Operator op7 = new SelectOperator(op6, plainSelect);
+
+            Tuple tuple = op7.getNextTuple();
+            while(tuple!=null){
+                tuple = op7.getNextTuple();
+            }
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private File getTargetFileFromString(String item){
+        String[] strs = item.split("\\s+");
+        return new File(Catalog.getInstance().getDataPath(strs[0]));
+    }
+    
 }

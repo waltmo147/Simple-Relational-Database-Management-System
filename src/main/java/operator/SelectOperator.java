@@ -4,6 +4,7 @@ import com.sun.org.apache.bcel.internal.generic.Select;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import util.SelectExpressionVisitor;
+import util.JoinExpressionVisitor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,11 @@ public class SelectOperator extends Operator{
     public SelectOperator(Operator operator, PlainSelect plainSelect) {
         prevOp = operator;
         expression = plainSelect.getWhere();
+        if(this.prevOp instanceof JoinOperator){
+            JoinExpressionVisitor joinExpress = new JoinExpressionVisitor(operator.getSchema());
+            expression.accept(joinExpress);
+            expression = joinExpress.getExpression();
+        }
         currentSchema = operator.getSchema();
     }
 

@@ -65,9 +65,9 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	 * @param map2
 	 * @param hash
 	 */
-	public JoinExpressionVisitor() {
+	public JoinExpressionVisitor(Map<String, Integer> schemaMap) {
 		expressionStack = new Stack<>();
-		this.schemaMap = Catalog.getInstance().getCurrentSchema();
+		this.schemaMap = schemaMap;
 	}
 	
 	/** 
