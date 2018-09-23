@@ -60,4 +60,12 @@ public class Tuple {
 //    public int hashCode() {
 //        return Arrays.hashCode(data);
 //    }
+    /**
+     * get the length of data
+     * @return int
+     */
+    public int getDataLength(){
+        return data.length;
+    }
+
 }
