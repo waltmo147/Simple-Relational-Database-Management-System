@@ -6,6 +6,6 @@ public abstract class Operator {
 
     public abstract void reset();
 
-    public abstract void dump();
+    public abstract void dump(String s, int i);
 
 }

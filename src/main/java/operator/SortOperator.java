@@ -56,7 +56,31 @@ public class SortOperator extends Operator{
         currentIndex = 0;
     }
 
-
+    /**
+     * for debugging, get all the tuples at once and put them in a file.
+     * @param index the index of the output file.
+     */
+    @Override
+    public void dump(String s) {
+        // TODO Auto-generated method stub
+        Tuple tuple = null;
+        BufferedWriter output = null;
+        try{
+            File file = new File(s + index);
+            StringBuilder sb = new StringBuilder();
+            output = new BufferedWriter(new FileWriter(file));
+            while((tuple = nextTuple())!=null){
+                sb.append(tuple.toString());
+                sb.append("\n");
+                System.out.println(tuple);
+            }
+            output.write(sb.toString());
+            output.close();
+        }catch(IOException e){
+            System.out.println("An exception occurs!");
+        }
+        reset();
+    }
 
 
     /**
