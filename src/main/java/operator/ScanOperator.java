@@ -14,14 +14,30 @@ public class ScanOperator extends Operator{
     private RandomAccessFile readerPointer;
     private Map<String, Integer> schema;
 
-    public ScanOperator(PlainSelect plainSelect, File file){
+    public ScanOperator(PlainSelect plainSelect, int tableIndex){
         this.op = null;
-        this.file = file;
+        
+        String item;
+        if(tableIndex < 0){
+            item = plainSelect.getFromItem().toString();
+        }
+        else{
+            item = plainSelect.getJoins().get(tableIndex).toString();
+        }
+
+        String[] strs = item.split("\\s+");
+        if(strs.length < 0){
+            this.file = null;
+            return;
+        }
+        String tableName = strs[0];
+        String aliasName = strs[strs.length - 1];
+        this.file = new File(Catalog.getInstance().getDataPath(tableName));
         initReaderPointer();
 
         String fromItem = plainSelect.getFromItem().toString();
         Catalog.getInstance().setAliases(fromItem);
-        Catalog.getInstance().updateCurrentSchema(getAlias(fromItem));
+        Catalog.getInstance().updateCurrentSchema(aliasName);
 
         this.schema = Catalog.getInstance().getCurrentSchema();
 

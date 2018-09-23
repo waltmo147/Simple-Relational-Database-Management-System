@@ -26,7 +26,6 @@ public class JoinOperator extends Operator{
         for (Map.Entry<String, Integer> entry : opRight.getSchema().entrySet()) {
             schema.put(entry.getKey(), entry.getValue() + opLeft.getSchema().size());
         }
-        schema.putAll(opRight.getSchema());
         Catalog.getInstance().setCurrentSchema(schema);
 
         outerTuple = null;

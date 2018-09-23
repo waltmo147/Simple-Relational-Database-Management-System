@@ -62,18 +62,15 @@ public class JoinExpressionVisitorTest{
 
     @Test
     public void testWhereAndJoin(){
-        String statement =  "SELECT * FROM Sailors, Reserves, Boats WHERE Reserves.G = Boats.D And Sailors.A = Reserves.G;";
+        String statement =  "SELECT * FROM Sailors, Reserves, Boats WHERE Reserves.H = Boats.D And Sailors.A = Reserves.G;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            File file1 = getTargetFileFromString(plainSelect.getFromItem().toString());
-            File file2 = getTargetFileFromString(plainSelect.getJoins().get(0).toString());
-            File file3 = getTargetFileFromString(plainSelect.getJoins().get(1).toString());
-            Operator op1 = new ScanOperator(plainSelect, file1);
-            Operator op2 = new ScanOperator(plainSelect, file2);
+            Operator op1 = new ScanOperator(plainSelect, -1);
+            Operator op2 = new ScanOperator(plainSelect, 0);
             Operator op3 = new JoinOperator(op1, op2, plainSelect);
             Operator op4 = new SelectOperator(op3, plainSelect);
-            Operator op5 = new ScanOperator(plainSelect, file3);
+            Operator op5 = new ScanOperator(plainSelect, 1);
             Operator op6 = new JoinOperator(op4, op5, plainSelect);
             Operator op7 = new SelectOperator(op6, plainSelect);
 
