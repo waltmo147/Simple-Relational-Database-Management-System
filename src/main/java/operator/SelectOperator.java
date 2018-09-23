@@ -1,11 +1,10 @@
 package operator;
 
-import com.sun.org.apache.bcel.internal.generic.Select;
+import model.Tuple;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import util.SelectExpressionVisitor;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class SelectOperator extends Operator{

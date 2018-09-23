@@ -1,5 +1,6 @@
 package operator;
 
+import model.Tuple;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.parser.CCJSqlParserManager;
 import net.sf.jsqlparser.statement.select.FromItem;
@@ -7,12 +8,9 @@ import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import org.junit.Test;
 import util.Catalog;
-import util.SelectExpressionVisitor;
 
 import java.io.File;
 import java.io.StringReader;
-
-import static org.junit.Assert.*;
 
 public class ProjectOperatorTest {
 

@@ -1,4 +1,4 @@
-package operator;
+package model;
 
 import java.util.Arrays;
 
@@ -43,6 +43,14 @@ public class Tuple {
         return data[index];
     }
 
+    /**
+     * get the length of data
+     * @return int
+     */
+    public int getDataLength(){
+        return data.length;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -60,12 +68,12 @@ public class Tuple {
 //    public int hashCode() {
 //        return Arrays.hashCode(data);
 //    }
-    /**
-     * get the length of data
-     * @return int
-     */
-    public int getDataLength(){
-        return data.length;
-    }
 
+
+    @Override
+    public String toString() {
+        return "Tuple{" +
+                "data=" + Arrays.toString(data) +
+                '}';
+    }
 }

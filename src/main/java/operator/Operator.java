@@ -1,5 +1,7 @@
 package operator;
 
+import model.Tuple;
+
 import java.util.Map;
 
 public abstract class Operator {

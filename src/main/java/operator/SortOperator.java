@@ -1,5 +1,6 @@
 package operator;
 
+import model.Tuple;
 import net.sf.jsqlparser.statement.select.OrderByElement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import util.Catalog;
