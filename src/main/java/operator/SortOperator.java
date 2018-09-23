@@ -19,6 +19,8 @@ import java.util.Map;
  * created by Yufu Mo ym445
  */
 public class SortOperator extends Operator{
+
+    // stores tuples
     private List<Tuple> tupleList;
     private final PlainSelect plainSelect;
     private int currentIndex;
@@ -52,6 +54,7 @@ public class SortOperator extends Operator{
         }
         currentIndex++;
         return tuple;
+
     }
 
     /**

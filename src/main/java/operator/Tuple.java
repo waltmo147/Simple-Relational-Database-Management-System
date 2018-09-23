@@ -1,8 +1,9 @@
 package operator;
 
+import java.util.Arrays;
+
 public class Tuple {
     private long[] data; // string array to store data
-
 
     /**
      * Constructor for tuple
@@ -42,4 +43,21 @@ public class Tuple {
         return data[index];
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Tuple tuple = (Tuple) o;
+
+        return Arrays.equals(data, tuple.data);
+    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Arrays.hashCode(data);
+//    }
 }
