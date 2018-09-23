@@ -23,19 +23,22 @@ public class ProjectOperator extends Operator {
         prevOp = operator;
         selectItems = plainSelect.getSelectItems();
         // yet did not handle cases: select A,D from S, B
-        Map<String, Integer> oldSchema = operator.getSchema();
-        currentSchema = new HashMap<>();
-        for (SelectItem selectItem : selectItems) {
-            currentSchema.put(selectItem.toString(),
-                    oldSchema.get(selectItem.toString()));
+        if (selectItems.get(0).toString() == "*") {
+            currentSchema = operator.getSchema();
+        } else {
+            Map<String, Integer> oldSchema = operator.getSchema();
+            currentSchema = new HashMap<>();
+            for (SelectItem selectItem : selectItems) {
+                currentSchema.put(selectItem.toString(),
+                        oldSchema.get(selectItem.toString()));
+            }
         }
-
     }
 
     @Override
     public Tuple getNextTuple() {
         Tuple next = prevOp.getNextTuple();
-        if (next != null) {
+        if (next != null && currentSchema != prevOp.getSchema()) {
             long[] data = new long[currentSchema.size()];
             int i=0;
             for (Integer ind: currentSchema.values()) {

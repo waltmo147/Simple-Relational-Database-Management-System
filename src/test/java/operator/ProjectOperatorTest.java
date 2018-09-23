@@ -51,7 +51,7 @@ public class ProjectOperatorTest {
         String tableFolder = "Samples/samples/input/db/data/";
         File file = new File(tableFolder + tableName);
 
-        String statement = "SELECT BT.E, BT.F FROM Boats AS BT WHERE BT.E = 9;";
+        String statement = "SELECT * FROM Boats AS BT WHERE BT.E = 9;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.
                 parse(new StringReader(statement))).getSelectBody();
