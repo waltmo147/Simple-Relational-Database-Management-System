@@ -1,6 +1,7 @@
 package operator;
 
 import net.sf.jsqlparser.statement.select.PlainSelect;
+import util.Catalog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,6 +53,7 @@ public class SortOperator extends Operator{
     class TupleComparator implements Comparator<Tuple> {
 
         List<Integer> order = ps.getOrderByElements();
+        Catalog catalog = Catalog.getInstance();
 
         @Override
         public int compare(Tuple t1, Tuple t2) {
@@ -60,7 +62,7 @@ public class SortOperator extends Operator{
             for(int i = 0; i < order.size(); i++){
                 String str = order.get(i).toString();
 
-                int index = man.get(str);
+                int index = catalog.getIndexOfColumn(str);
                 if (t1.getData(index)>t2.getData(index)) return 1;
                 else if(tup1.getData(index)<tup2.getData(index)) return -1;
             }
