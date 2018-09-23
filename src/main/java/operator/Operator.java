@@ -10,4 +10,6 @@ public abstract class Operator {
 
     public abstract void dump(int i);
 
+    public abstract Map<String, Integer> getSchema();
+
 }

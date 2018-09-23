@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SortOperator
@@ -20,11 +21,12 @@ public class SortOperator extends Operator{
     private List<Tuple> tupleList;
     private final PlainSelect plainSelect;
     private int currentIndex;
-
+    private Map<String, Integer> schema;
 
     public SortOperator(Operator operator, PlainSelect plainSelect) {
         tupleList = new ArrayList<Tuple>();
         this.plainSelect = plainSelect;
+        this.schema = operator.getSchema();
 
         // initialize the list
         Tuple tuple = operator.getNextTuple();
@@ -58,6 +60,14 @@ public class SortOperator extends Operator{
     public void reset() {
         // TODO Auto-generated method stub
         currentIndex = 0;
+    }
+
+    /**
+     * get the schema
+     */
+    @Override
+    public Map<String, Integer> getSchema(){
+        return this.schema;
     }
 
     /**
