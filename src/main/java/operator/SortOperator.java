@@ -98,7 +98,7 @@ public class SortOperator extends Operator{
             output.write(sb.toString());
             output.close();
         }catch(IOException e){
-            System.out.println("An exception occurs!");
+            e.printStackTrace();
         }
         reset();
     }
