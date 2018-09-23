@@ -41,7 +41,6 @@ public class ProjectOperatorTest {
             int index = op.getSchema().get("S.A");
             System.out.println(index);
 
-
         }catch(Exception e){
             e.printStackTrace();
         }
