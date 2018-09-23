@@ -2,7 +2,8 @@ package util;
 
 import org.junit.Test;
 import util.JoinExpressionVisitor;
-
+import java.io.File;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 import static org.junit.Assert.*;
@@ -14,13 +15,13 @@ import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
+import net.sf.jsqlparser.parser.CCJSqlParserManager;
 
 
 public class JoinExpressionVisitorTest{
 
     @Test
     public void testExtractExpression(){
-        // sqlQuery = "SELECT * FROM Sailors, Reserves, Boats WHERE Sailors.A = Boats.D And Sailors.A = Reserves.G;";
         Map<String, Integer> schemaMap = new HashMap<>();
         schemaMap.put("Sailors.A", 0);
         schemaMap.put("Sailors.B", 1);
@@ -37,12 +38,11 @@ public class JoinExpressionVisitorTest{
         Map<String, Integer> a = Catalog.getInstance().getCurrentSchema();
 
         String whereClause = "Sailors.A = Boats.D And Sailors.A = Reserves.G";
+
+        String statement =  "SELECT * FROM Sailors, Reserves, Boats WHERE Sailors.A = Boats.D And Sailors.A = Reserves.G;";
+        CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
-            CCJSqlParser parser = new CCJSqlParser(new FileReader("test.sql"));
-            Statement statement;
-            statement = parser.Statement();
-            Select select = (Select) statement;
-            PlainSelect plainSelect = (PlainSelect) select.getSelectBody();
+            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
             Expression expr = plainSelect.getWhere();
 
             JoinExpressionVisitor joinExpress = new JoinExpressionVisitor();
