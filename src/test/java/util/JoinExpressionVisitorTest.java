@@ -7,9 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 import static org.junit.Assert.*;
 
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import net.sf.jsqlparser.expression.ExpressionVisitor;
 import net.sf.jsqlparser.expression.Expression;
+import java.io.FileReader;
+import net.sf.jsqlparser.parser.CCJSqlParser;
+import net.sf.jsqlparser.statement.Statement;
+import net.sf.jsqlparser.statement.select.PlainSelect;
+import net.sf.jsqlparser.statement.select.Select;
 
 
 public class JoinExpressionVisitorTest{
@@ -31,10 +35,21 @@ public class JoinExpressionVisitorTest{
         Catalog.getInstance().setAliases("Reserves");
 
         String whereClause = "Sailors.A = Boats.D And Sailors.A = Reserves.G";
-        Expression expr = CCJSqlParserUtil.parseCondExpression(whereClause);
+        try{
+            CCJSqlParser parser = new CCJSqlParser(new FileReader("test.sql"));
+            Statement statement;
+            statement = parser.Statement();
+            Select select = (Select) statement;
+            PlainSelect plainSelect = (PlainSelect) select.getSelectBody();
+            Expression expr = plainSelect.getWhere();
 
-        ExpressionVisitor joinExpress = new JoinExpressionVisitor();
-		expr.accept(joinExpress);
+            JoinExpressionVisitor joinExpress = new JoinExpressionVisitor();
+            expr.accept(joinExpress);
+            Expression output = joinExpress.getExpression();
+            int a =1;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
 
     }
