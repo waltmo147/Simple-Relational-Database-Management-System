@@ -73,8 +73,13 @@ public class Catalog {
      * move the current schema pointer
      * @param alias: change current schema to a new one
      */
-    public void setCurrentSchema(String alias) {
-        currentSchema = schemas.get(aliases.get(alias));
+    public void updateCurrentSchema(String alias) {
+        Map<String, Integer> tempSchema = schemas.get(aliases.get(alias));
+        currentSchema = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : tempSchema.entrySet()) {
+            String newKey = alias + "." + entry.getKey().split("\\.")[1];
+            currentSchema.put(newKey, entry.getValue());
+        }
     }
 
     /**
