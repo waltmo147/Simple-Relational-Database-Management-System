@@ -17,7 +17,7 @@ target/
 *.class
 
 # Output files
-Samples/samples/output/
+Samples/samples/output/*
 
 # Log file
 *.log
