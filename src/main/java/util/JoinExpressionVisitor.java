@@ -2,9 +2,6 @@ package util;
 
 import java.util.Map;
 import java.util.Stack;
-import java.util.Set;
-
-import operator.Tuple;
 
 import net.sf.jsqlparser.expression.AllComparisonExpression;
 import net.sf.jsqlparser.expression.AnyComparisonExpression;

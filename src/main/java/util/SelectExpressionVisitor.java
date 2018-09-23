@@ -6,10 +6,9 @@ import net.sf.jsqlparser.expression.operators.conditional.*;
 import net.sf.jsqlparser.expression.operators.relational.*;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.SubSelect;
-import operator.Tuple;
+import model.Tuple;
 
 import java.util.*;
-import java.util.concurrent.DelayQueue;
 
 
 public class SelectExpressionVisitor implements ExpressionVisitor {
