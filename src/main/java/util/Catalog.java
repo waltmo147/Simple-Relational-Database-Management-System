@@ -74,7 +74,7 @@ public class Catalog {
      * @param alias: change current schema to a new one
      */
     public void setCurrentSchema(String alias) {
-        currentSchema = schemas.get(alias);
+        currentSchema = schemas.get(aliases.get(alias));
     }
 
     /**
