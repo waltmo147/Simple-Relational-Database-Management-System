@@ -14,6 +14,11 @@ public class SelectOperator extends Operator{
     private Expression expression;
     private Map<String, Integer> currentSchema;
 
+    public SelectOperator(Operator operator, PlainSelect plainSelect) {
+        prevOp = operator;
+        expression = plainSelect.getWhere();
+        currentSchema = operator.getSchema();
+    }
 
     @Override
     public Tuple getNextTuple() {
@@ -22,7 +27,7 @@ public class SelectOperator extends Operator{
             while (next != null) {
                 SelectExpressionVisitor sv = new SelectExpressionVisitor(next, prevOp.getSchema());
                 expression.accept(sv);
-                if (sv.getResult() == true) {
+                if (sv.getResult()) {
                     break;
                 }
                 next = prevOp.getNextTuple();
