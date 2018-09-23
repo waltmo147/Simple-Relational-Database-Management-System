@@ -20,11 +20,11 @@ public class ScanOperator extends Operator{
         this.op = null;
         
         String item;
-        if(tableIndex < 0){
+        if(tableIndex == 0){
             item = plainSelect.getFromItem().toString();
         }
         else{
-            item = plainSelect.getJoins().get(tableIndex).toString();
+            item = plainSelect.getJoins().get(tableIndex-1).toString();
         }
 
         String[] strs = item.split("\\s+");

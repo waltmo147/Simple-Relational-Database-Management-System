@@ -15,14 +15,10 @@ public class SelectOperatorTest {
 
     @Test
     public void getNextTuple() throws Exception {
-        String tableName = "Boats";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Boats AS BT WHERE BT.E = 9;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-        Operator scanOp = new ScanOperator(plainSelect, file);
+        Operator scanOp = new ScanOperator(plainSelect, 0);
 
         Operator selectOp = new SelectOperator(scanOp, plainSelect);
 

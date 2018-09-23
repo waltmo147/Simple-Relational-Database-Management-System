@@ -16,11 +16,6 @@ public class ProjectOperatorTest {
 
     @Test
     public void getNextTuple() {
-
-        String tableName = "Sailors";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Sailors S WHERE S.A <= 3;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
@@ -28,7 +23,7 @@ public class ProjectOperatorTest {
                     .parse(new StringReader(statement))).getSelectBody();
             System.out.println("plainSelect: ");
 
-            Operator op = new ScanOperator(plainSelect, file);
+            Operator op = new ScanOperator(plainSelect, 0);
             Catalog catalog = Catalog.getInstance();
             System.out.println(catalog.getCurrentSchema());
             Tuple currentTuple = op.getNextTuple();

@@ -14,15 +14,12 @@ public class JoinOperatorTest{
 
     @Test
     public void testJoin(){
-        File file1 = new File(Catalog.getInstance().getDataPath("Sailors"));
-        File file2 = new File(Catalog.getInstance().getDataPath("Reserves"));
-
         String statement = "SELECT * FROM Sailors, Reserves;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op1 = new ScanOperator(plainSelect, file1);
-            Operator op2 = new ScanOperator(plainSelect, file2);
+            Operator op1 = new ScanOperator(plainSelect, 0);
+            Operator op2 = new ScanOperator(plainSelect, 1);
             Operator opJoin = new JoinOperator(op1, op2, plainSelect);
 
             while(opJoin.getNextTuple()!=null){
