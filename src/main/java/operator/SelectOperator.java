@@ -7,18 +7,18 @@ import util.SelectExpressionVisitor;
 import java.util.HashMap;
 
 public class SelectOperator {
-    private ScanOperator scan;
-    private PlainSelect pl;
-
-
-    public Tuple getNextTuple() {
-        Tuple next = scan.getNextTuple();
-        Expression where = pl.getWhere();
-        if (where == null) {
-            return next;
-        }
-        SelectExpressionVisitor sv = new
-        while ()
-
-    }
+//    private ScanOperator scan;
+//    private PlainSelect pl;
+//
+//
+//    public Tuple getNextTuple() {
+//        Tuple next = scan.getNextTuple();
+//        Expression where = pl.getWhere();
+//        if (where == null) {
+//            return next;
+//        }
+//        SelectExpressionVisitor sv = new
+//        while ()
+//
+//    }
 }

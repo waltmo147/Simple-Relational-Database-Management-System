@@ -6,70 +6,119 @@ import net.sf.jsqlparser.expression.operators.conditional.*;
 import net.sf.jsqlparser.expression.operators.relational.*;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.SubSelect;
+import operator.Tuple;
 
 import java.util.*;
 import java.util.concurrent.DelayQueue;
 
+
 public class SelectExpressionVisitor implements ExpressionVisitor {
 
     private Catalog catalog;
-    private Deque<String> data;
-    private Deque<Boolean> value;
-    private Tuple<String> currentTuple;
+    private Deque<Long> data;
+    private Deque<Boolean> values;
+    private Tuple currentTuple;
+
+    public SelectExpressionVisitor(Tuple tuple) {
+        catalog = Catalog.getInstance();
+        data = new LinkedList<>();
+        values = new LinkedList<>();
+        currentTuple = tuple;
+    }
+
+    /**
+     * @return result of the expression
+     */
+    public boolean getResult() {
+        if (values.isEmpty()) {
+            return true;
+        }
+        return values.peekFirst();
+    }
 
     @Override
     public void visit(AndExpression andExpression) {
         // Todo
-
-
+        andExpression.getLeftExpression().accept(this);
+        andExpression.getRightExpression().accept(this);
+        boolean leftValue = values.removeFirst();
+        boolean rightValue = values.removeFirst();
+        values.addFirst(leftValue && rightValue);
     }
 
     @Override
     public void visit(Column column) {
         // Todo
-        String columnName = column.getWholeColumnName()
-        catalog.getCurrentSchema();
-        int ind = catalog.getIndexofColumn(s);
-        values.push(tuple.getData(index));
-
-
+        String columnName = column.getWholeColumnName();
+        int ind = catalog.getIndexOfColumn(columnName);
+        data.push(currentTuple.getDataAt(ind));
     }
 
     @Override
     public void visit(LongValue longValue) {
         // Todo
-
+        data.push(longValue.getValue());
     }
 
     @Override
     public void visit(EqualsTo equalsTo) {
         // Todo
+        equalsTo.getLeftExpression().accept(this);
+        equalsTo.getRightExpression().accept(this);
+        long leftValue = data.removeFirst();
+        long rightValue = data.removeFirst();
+        values.addFirst(leftValue == rightValue);
     }
 
     @Override
     public void visit(NotEqualsTo notEqualsTo) {
         // Todo
+        notEqualsTo.getLeftExpression().accept(this);
+        notEqualsTo.getRightExpression().accept(this);
+        long leftValue = data.removeFirst();
+        long rightValue = data.removeFirst();
+        values.addFirst(leftValue != rightValue);
     }
 
     @Override
     public void visit(GreaterThan greaterThan) {
         // Todo
+        greaterThan.getLeftExpression().accept(this);
+        greaterThan.getRightExpression().accept(this);
+        long leftValue = data.removeFirst();
+        long rightValue = data.removeFirst();
+        values.addFirst(leftValue > rightValue);
     }
 
     @Override
     public void visit(GreaterThanEquals greaterThanEquals) {
         // todo
+        greaterThanEquals.getLeftExpression().accept(this);
+        greaterThanEquals.getRightExpression().accept(this);
+        long leftValue = data.removeFirst();
+        long rightValue = data.removeFirst();
+        values.addFirst(leftValue >= rightValue);
 
     }
 
     @Override
     public void visit(MinorThan minorThan) {
         // Todo
+        minorThan.getLeftExpression().accept(this);
+        minorThan.getRightExpression().accept(this);
+        long leftValue = data.removeFirst();
+        long rightValue = data.removeFirst();
+        values.addFirst(leftValue < rightValue);
     }
 
     @Override
     public void visit(MinorThanEquals minorThanEquals) {
         // Todo
+        minorThanEquals.getLeftExpression().accept(this);
+        minorThanEquals.getRightExpression().accept(this);
+        long leftValue = data.removeFirst();
+        long rightValue = data.removeFirst();
+        values.addFirst(leftValue <= rightValue);
     }
 
 
