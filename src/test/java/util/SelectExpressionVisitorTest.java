@@ -28,16 +28,11 @@ public class SelectExpressionVisitorTest {
      */
     @Test
     public void visit() {
-
-        String tableName = "Sailors";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Sailors S WHERE S.A = 3;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op = new ScanOperator(plainSelect, file);
+            Operator op = new ScanOperator(plainSelect, 0);
             Catalog catalog = Catalog.getInstance();
             System.out.println(catalog.getCurrentSchema());
             Tuple currentTuple = op.getNextTuple();
@@ -82,7 +77,7 @@ public class SelectExpressionVisitorTest {
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op = new ScanOperator(plainSelect, file);
+            Operator op = new ScanOperator(plainSelect, 0);
             Catalog catalog = Catalog.getInstance();
             System.out.println(catalog.getCurrentSchema());
             Tuple currentTuple = op.getNextTuple();
@@ -126,7 +121,7 @@ public class SelectExpressionVisitorTest {
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op = new ScanOperator(plainSelect, file);
+            Operator op = new ScanOperator(plainSelect, 0);
             Catalog catalog = Catalog.getInstance();
             System.out.println(catalog.getCurrentSchema());
             Tuple currentTuple = op.getNextTuple();
@@ -170,7 +165,7 @@ public class SelectExpressionVisitorTest {
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op = new ScanOperator(plainSelect, file);
+            Operator op = new ScanOperator(plainSelect, 0);
             Catalog catalog = Catalog.getInstance();
             System.out.println(catalog.getCurrentSchema());
             Tuple currentTuple = op.getNextTuple();
@@ -215,7 +210,7 @@ public class SelectExpressionVisitorTest {
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op = new ScanOperator(plainSelect, file);
+            Operator op = new ScanOperator(plainSelect, 0);
             Catalog catalog = Catalog.getInstance();
             System.out.println(catalog.getCurrentSchema());
             Tuple currentTuple = op.getNextTuple();
@@ -259,7 +254,7 @@ public class SelectExpressionVisitorTest {
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op = new ScanOperator(plainSelect, file);
+            Operator op = new ScanOperator(plainSelect, 0);
             Catalog catalog = Catalog.getInstance();
             System.out.println(catalog.getCurrentSchema());
             Tuple currentTuple = op.getNextTuple();
@@ -304,7 +299,7 @@ public class SelectExpressionVisitorTest {
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op = new ScanOperator(plainSelect, file);
+            Operator op = new ScanOperator(plainSelect, 0);
             Catalog catalog = Catalog.getInstance();
             System.out.println(catalog.getCurrentSchema());
             Tuple currentTuple = op.getNextTuple();

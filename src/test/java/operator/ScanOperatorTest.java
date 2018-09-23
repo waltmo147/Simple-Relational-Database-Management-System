@@ -12,15 +12,11 @@ public class ScanOperatorTest{
 
     @Test
     public void testReadFile(){
-        String tableName = "Boats";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Sailors, Reserves WHERE Sailors.A = Reserves.G;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op = new ScanOperator(plainSelect, file);
+            Operator op = new ScanOperator(plainSelect, 0);
 
             while(op.getNextTuple()!=null){
                 System.out.println("read successfully");

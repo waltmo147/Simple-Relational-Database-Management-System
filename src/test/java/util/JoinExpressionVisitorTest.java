@@ -4,7 +4,7 @@ import operator.ScanOperator;
 import operator.SelectOperator;
 import operator.JoinOperator;
 import operator.Operator;
-import operator.Tuple;
+import model.Tuple;
 
 import org.junit.Test;
 import java.io.File;
@@ -66,11 +66,11 @@ public class JoinExpressionVisitorTest{
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
             PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op1 = new ScanOperator(plainSelect, -1);
-            Operator op2 = new ScanOperator(plainSelect, 0);
+            Operator op1 = new ScanOperator(plainSelect, 0);
+            Operator op2 = new ScanOperator(plainSelect, 1);
             Operator op3 = new JoinOperator(op1, op2, plainSelect);
             Operator op4 = new SelectOperator(op3, plainSelect);
-            Operator op5 = new ScanOperator(plainSelect, 1);
+            Operator op5 = new ScanOperator(plainSelect, 2);
             Operator op6 = new JoinOperator(op4, op5, plainSelect);
             Operator op7 = new SelectOperator(op6, plainSelect);
 
@@ -78,8 +78,6 @@ public class JoinExpressionVisitorTest{
             while(tuple!=null){
                 tuple = op7.getNextTuple();
             }
-
-
         }catch(Exception e){
             e.printStackTrace();
         }

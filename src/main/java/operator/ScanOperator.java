@@ -20,11 +20,11 @@ public class ScanOperator extends Operator{
         this.op = null;
         
         String item;
-        if(tableIndex < 0){
+        if(tableIndex == 0){
             item = plainSelect.getFromItem().toString();
         }
         else{
-            item = plainSelect.getJoins().get(tableIndex).toString();
+            item = plainSelect.getJoins().get(tableIndex-1).toString();
         }
 
         String[] strs = item.split("\\s+");
@@ -45,14 +45,29 @@ public class ScanOperator extends Operator{
 
     }
 
-    public ScanOperator(Operator op, PlainSelect plainSelect, File file){
+    public ScanOperator(Operator op, PlainSelect plainSelect, int tableIndex){
         this.op = op;
-        this.file = file;
+        String item;
+        if(tableIndex == 0){
+            item = plainSelect.getFromItem().toString();
+        }
+        else{
+            item = plainSelect.getJoins().get(tableIndex-1).toString();
+        }
+
+        String[] strs = item.split("\\s+");
+        if(strs.length < 0){
+            this.file = null;
+            return;
+        }
+        String tableName = strs[0];
+        String aliasName = strs[strs.length - 1];
+        this.file = new File(Catalog.getInstance().getDataPath(tableName));
         initReaderPointer();
-        
+
         String fromItem = plainSelect.getFromItem().toString();
         Catalog.getInstance().setAliases(fromItem);
-        Catalog.getInstance().updateCurrentSchema(getAlias(fromItem));
+        Catalog.getInstance().updateCurrentSchema(aliasName);
 
         this.schema = Catalog.getInstance().getCurrentSchema();
 
@@ -109,16 +124,6 @@ public class ScanOperator extends Operator{
             this.readerPointer = new RandomAccessFile(this.file, "r");
         }catch(FileNotFoundException e){
             System.out.printf("Cannot find file %s!\n", this.file.getName());
-        }
-    }
-
-    private String getAlias(String fromItem){
-        String[] strs = fromItem.split("\\s+");
-        if (strs.length == 0) {
-            return "";
-        }
-        else{
-            return strs[strs.length - 1];
         }
     }
 }

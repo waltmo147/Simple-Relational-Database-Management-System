@@ -27,7 +27,7 @@ public class ProjectOperatorTest {
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.
                 parse(new StringReader(statement))).getSelectBody();
-        Operator scanOp = new ScanOperator(plainSelect, file);
+        Operator scanOp = new ScanOperator(plainSelect, 0);
         Operator selectOp = new SelectOperator(scanOp, plainSelect);
         Operator projectOp = new ProjectOperator(selectOp, plainSelect);
         Tuple tuple = projectOp.getNextTuple();
