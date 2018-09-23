@@ -95,6 +95,14 @@ public class Catalog {
     }
 
     /**
+     * return output path
+     * @return output path string
+     */
+    public String getOutputPath() {
+        return Constants.OUTPUT_PATH;
+    }
+
+    /**
      * to set aliases to deal with the occasional failure of sqlparser
      * @param str the str parsed by sqlparser
      */

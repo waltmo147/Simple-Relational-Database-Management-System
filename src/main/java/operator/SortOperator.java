@@ -3,6 +3,10 @@ package operator;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import util.Catalog;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,21 +62,24 @@ public class SortOperator extends Operator{
 
     /**
      * for debugging, get all the tuples at once and put them in a file.
-     * @param index the index of the output file.
+     * @param i the index of the output file.
      */
     @Override
-    public void dump(String s) {
+    public void dump(int i) {
         // TODO Auto-generated method stub
-        Tuple tuple = null;
-        BufferedWriter output = null;
+        String path = Catalog.getInstance().getOutputPath();
+        BufferedWriter output;
         try{
-            File file = new File(s + index);
+            File file = new File(path + i);
             StringBuilder sb = new StringBuilder();
             output = new BufferedWriter(new FileWriter(file));
-            while((tuple = nextTuple())!=null){
+            Tuple tuple = getNextTuple();
+
+            while(tuple != null){
                 sb.append(tuple.toString());
                 sb.append("\n");
                 System.out.println(tuple);
+                tuple = getNextTuple();
             }
             output.write(sb.toString());
             output.close();
@@ -89,7 +96,6 @@ public class SortOperator extends Operator{
     class TupleComparator implements Comparator<Tuple> {
 
         List<Integer> order = plainSelect.getOrderByElements();
-        Catalog catalog = Catalog.getInstance();
 
         @Override
         public int compare(Tuple t1, Tuple t2) {
@@ -97,7 +103,7 @@ public class SortOperator extends Operator{
             // sort tuples from the order from sql query.
             for (int i = 0; i < order.size(); i++) {
                 String str = order.get(i).toString();
-                int index = catalog.getIndexOfColumn(str);
+                int index = Catalog.getInstance().getIndexOfColumn(str);
                 if (t1.getDataAt(index) > t2.getDataAt(index)) {
                     return 1;
                 }
@@ -108,7 +114,7 @@ public class SortOperator extends Operator{
 
             // for tie breaker
             // sort tuples by the order of columns.
-            for (int i = 0; i < catalog.getCurrentSchema().size(); i++){
+            for (int i = 0; i < Catalog.getInstance().getCurrentSchema().size(); i++){
                 if (t1.getDataAt(i) > t2.getDataAt(i)) {
                     return 1;
                 }
