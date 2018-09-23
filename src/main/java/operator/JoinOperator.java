@@ -1,9 +1,6 @@
 package operator;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.RandomAccessFile;
-import java.io.IOException;
+import model.Tuple;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import util.Catalog;
 

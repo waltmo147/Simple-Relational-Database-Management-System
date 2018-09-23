@@ -1,19 +1,15 @@
 package util;
 
 import net.sf.jsqlparser.expression.Expression;
-import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.parser.CCJSqlParserManager;
-import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.*;
 import operator.Operator;
 import operator.ScanOperator;
-import operator.Tuple;
+import model.Tuple;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.StringReader;
-import java.util.HashMap;
 
 import static org.junit.Assert.*;
 

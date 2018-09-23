@@ -1,5 +1,6 @@
 package operator;
 
+import model.Tuple;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectItem;
 
