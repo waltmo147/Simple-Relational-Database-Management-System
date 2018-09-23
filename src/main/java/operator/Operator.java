@@ -6,4 +6,6 @@ public abstract class Operator {
 
     public abstract void reset();
 
+    public abstract void dump();
+
 }
