@@ -41,8 +41,8 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
         // Todo
         andExpression.getLeftExpression().accept(this);
         andExpression.getRightExpression().accept(this);
-        boolean leftValue = values.removeFirst();
         boolean rightValue = values.removeFirst();
+        boolean leftValue = values.removeFirst();
         values.addFirst(leftValue && rightValue);
     }
 
@@ -59,6 +59,7 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
     public void visit(LongValue longValue) {
         // Todo
         data.push(longValue.getValue());
+        System.out.println("push" + longValue.getValue());
     }
 
     @Override
@@ -66,8 +67,8 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
         // Todo
         equalsTo.getLeftExpression().accept(this);
         equalsTo.getRightExpression().accept(this);
-        long leftValue = data.removeFirst();
         long rightValue = data.removeFirst();
+        long leftValue = data.removeFirst();
         values.addFirst(leftValue == rightValue);
     }
 
@@ -76,8 +77,8 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
         // Todo
         notEqualsTo.getLeftExpression().accept(this);
         notEqualsTo.getRightExpression().accept(this);
-        long leftValue = data.removeFirst();
         long rightValue = data.removeFirst();
+        long leftValue = data.removeFirst();
         values.addFirst(leftValue != rightValue);
     }
 
@@ -86,8 +87,8 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
         // Todo
         greaterThan.getLeftExpression().accept(this);
         greaterThan.getRightExpression().accept(this);
-        long leftValue = data.removeFirst();
         long rightValue = data.removeFirst();
+        long leftValue = data.removeFirst();
         values.addFirst(leftValue > rightValue);
     }
 
@@ -96,8 +97,8 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
         // todo
         greaterThanEquals.getLeftExpression().accept(this);
         greaterThanEquals.getRightExpression().accept(this);
-        long leftValue = data.removeFirst();
         long rightValue = data.removeFirst();
+        long leftValue = data.removeFirst();
         values.addFirst(leftValue >= rightValue);
 
     }
@@ -105,11 +106,13 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
     @Override
     public void visit(MinorThan minorThan) {
         // Todo
+        System.out.println("Minor Than Expression");
         minorThan.getLeftExpression().accept(this);
         minorThan.getRightExpression().accept(this);
-        long leftValue = data.removeFirst();
         long rightValue = data.removeFirst();
+        long leftValue = data.removeFirst();
         values.addFirst(leftValue < rightValue);
+        System.out.println("add " + (leftValue < rightValue));
     }
 
     @Override
@@ -117,8 +120,8 @@ public class SelectExpressionVisitor implements ExpressionVisitor {
         // Todo
         minorThanEquals.getLeftExpression().accept(this);
         minorThanEquals.getRightExpression().accept(this);
-        long leftValue = data.removeFirst();
         long rightValue = data.removeFirst();
+        long leftValue = data.removeFirst();
         values.addFirst(leftValue <= rightValue);
     }
 

@@ -25,15 +25,13 @@ public class SelectExpressionVisitorTest {
     //private static final String queriesFile = "Samples/samples/input/queries.sql";
 
 
+
+    /**
+     * test visit(EqualsTo equalsTo)
+     * meanwhile test visit(Column column) and visit(LongValue longValue)
+     */
     @Test
     public void visit() {
-//        HashMap<String, Integer> mySchema = new HashMap<>();
-//        mySchema.put("id", 0);
-//        mySchema.put("a", 1);
-//        mySchema.put("b", 2);
-//        mySchema.put("c", 3);
-//        catalog.setCurrentSchema("Sailors");
-//        Tuple tuple = new Tuple("1,4,5,6");
 
         String tableName = "Sailors";
         String tableFolder = "Samples/samples/input/db/data/";
@@ -51,14 +49,22 @@ public class SelectExpressionVisitorTest {
             System.out.println("From item is " + fromItem);
             Expression whereEx = plainSelect.getWhere();
             System.out.println("Where expression is " + whereEx);
-
+            int index = op.getSchema().get("S.A");
+            System.out.println(index);
             while(currentTuple != null){
                 visitor = new SelectExpressionVisitor(currentTuple, op.getSchema());
                 if (whereEx != null) {
                     whereEx.accept(visitor);
-                    assertEquals(true, visitor.getResult());
+                    System.out.println(currentTuple.getDataAt(index));
+                    if (currentTuple.getDataAt(index) == 3) {
+                        assertEquals(true, visitor.getResult());
+                    } else {
+                        assertEquals(false, visitor.getResult());
+                    }
+
                 }
                 System.out.println("select expression successfully");
+                currentTuple = op.getNextTuple();
             }
 
         }catch(Exception e){
@@ -67,28 +73,270 @@ public class SelectExpressionVisitorTest {
 
     }
 
+    /**
+     * test visit(NotEqualsTo notEqualsTo);
+     */
     @Test
     public void visit1() {
+        String tableName = "Sailors";
+        String tableFolder = "Samples/samples/input/db/data/";
+        File file = new File(tableFolder + tableName);
+
+        String statement = "SELECT * FROM Sailors S WHERE S.A != 3;";
+        CCJSqlParserManager parserManager = new CCJSqlParserManager();
+        try{
+            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
+            Operator op = new ScanOperator(plainSelect, file);
+            Catalog catalog = Catalog.getInstance();
+            System.out.println(catalog.getCurrentSchema());
+            Tuple currentTuple = op.getNextTuple();
+            FromItem fromItem = plainSelect.getFromItem();
+            System.out.println("From item is " + fromItem);
+            Expression whereEx = plainSelect.getWhere();
+            System.out.println("Where expression is " + whereEx);
+            int index = op.getSchema().get("S.A");
+            System.out.println(index);
+            while(currentTuple != null){
+                visitor = new SelectExpressionVisitor(currentTuple, op.getSchema());
+                if (whereEx != null) {
+                    whereEx.accept(visitor);
+                    System.out.println(currentTuple.getDataAt(index));
+                    if (currentTuple.getDataAt(index) != 3) {
+                        assertEquals(true, visitor.getResult());
+                    } else {
+                        assertEquals(false, visitor.getResult());
+                    }
+
+                }
+                System.out.println("select expression successfully");
+                currentTuple = op.getNextTuple();
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * test visit(GreaterThan greaterThan)
+     */
     @Test
     public void visit2() {
+        String tableName = "Sailors";
+        String tableFolder = "Samples/samples/input/db/data/";
+        File file = new File(tableFolder + tableName);
+
+        String statement = "SELECT * FROM Sailors S WHERE S.A > 3;";
+        CCJSqlParserManager parserManager = new CCJSqlParserManager();
+        try{
+            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
+            Operator op = new ScanOperator(plainSelect, file);
+            Catalog catalog = Catalog.getInstance();
+            System.out.println(catalog.getCurrentSchema());
+            Tuple currentTuple = op.getNextTuple();
+            FromItem fromItem = plainSelect.getFromItem();
+            System.out.println("From item is " + fromItem);
+            Expression whereEx = plainSelect.getWhere();
+            System.out.println("Where expression is " + whereEx);
+            int index = op.getSchema().get("S.A");
+            System.out.println(index);
+            while(currentTuple != null){
+                visitor = new SelectExpressionVisitor(currentTuple, op.getSchema());
+                if (whereEx != null) {
+                    whereEx.accept(visitor);
+                    System.out.println(currentTuple.getDataAt(index));
+                    if (currentTuple.getDataAt(index) > 3) {
+                        assertEquals(true, visitor.getResult());
+                    } else {
+                        assertEquals(false, visitor.getResult());
+                    }
+
+                }
+                System.out.println("select greaterThan successfully");
+                currentTuple = op.getNextTuple();
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * test visit(GreaterThanEquals greaterThanEquals)
+     */
     @Test
     public void visit3() {
+        String tableName = "Sailors";
+        String tableFolder = "Samples/samples/input/db/data/";
+        File file = new File(tableFolder + tableName);
+
+        String statement = "SELECT * FROM Sailors S WHERE S.A >= 3;";
+        CCJSqlParserManager parserManager = new CCJSqlParserManager();
+        try{
+            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
+            Operator op = new ScanOperator(plainSelect, file);
+            Catalog catalog = Catalog.getInstance();
+            System.out.println(catalog.getCurrentSchema());
+            Tuple currentTuple = op.getNextTuple();
+            FromItem fromItem = plainSelect.getFromItem();
+            System.out.println("From item is " + fromItem);
+            Expression whereEx = plainSelect.getWhere();
+            System.out.println("Where expression is " + whereEx);
+            int index = op.getSchema().get("S.A");
+            System.out.println(index);
+            while(currentTuple != null){
+                visitor = new SelectExpressionVisitor(currentTuple, op.getSchema());
+                if (whereEx != null) {
+                    whereEx.accept(visitor);
+                    System.out.println(currentTuple.getDataAt(index));
+                    if (currentTuple.getDataAt(index) >= 3) {
+                        assertEquals(true, visitor.getResult());
+                    } else {
+                        assertEquals(false, visitor.getResult());
+                    }
+
+                }
+                System.out.println("select greaterThan successfully");
+                currentTuple = op.getNextTuple();
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
+    /**
+     * test visit(MinorThan minorThan)
+     */
     @Test
     public void visit4() {
+        String tableName = "Sailors";
+        String tableFolder = "Samples/samples/input/db/data/";
+        File file = new File(tableFolder + tableName);
+
+        String statement = "SELECT * FROM Sailors S WHERE S.A < 3;";
+        CCJSqlParserManager parserManager = new CCJSqlParserManager();
+        try{
+            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
+            Operator op = new ScanOperator(plainSelect, file);
+            Catalog catalog = Catalog.getInstance();
+            System.out.println(catalog.getCurrentSchema());
+            Tuple currentTuple = op.getNextTuple();
+            FromItem fromItem = plainSelect.getFromItem();
+            System.out.println("From item is " + fromItem);
+            Expression whereEx = plainSelect.getWhere();
+            System.out.println("Where expression is " + whereEx);
+            int index = op.getSchema().get("S.A");
+            System.out.println(index);
+            while(currentTuple != null){
+                visitor = new SelectExpressionVisitor(currentTuple, op.getSchema());
+                if (whereEx != null) {
+                    whereEx.accept(visitor);
+                    System.out.println(currentTuple.getDataAt(index));
+                    if (currentTuple.getDataAt(index) < 3) {
+                        assertEquals(true, visitor.getResult());
+                    } else {
+                        assertEquals(false, visitor.getResult());
+                    }
+
+                }
+                System.out.println("select greaterThan successfully");
+                currentTuple = op.getNextTuple();
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * visit(MinorThanEquals minorThanEquals)
+     */
     @Test
     public void visit5() {
+        String tableName = "Sailors";
+        String tableFolder = "Samples/samples/input/db/data/";
+        File file = new File(tableFolder + tableName);
+
+        String statement = "SELECT * FROM Sailors S WHERE S.A <= 3;";
+        CCJSqlParserManager parserManager = new CCJSqlParserManager();
+        try{
+            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
+            Operator op = new ScanOperator(plainSelect, file);
+            Catalog catalog = Catalog.getInstance();
+            System.out.println(catalog.getCurrentSchema());
+            Tuple currentTuple = op.getNextTuple();
+            FromItem fromItem = plainSelect.getFromItem();
+            System.out.println("From item is " + fromItem);
+            Expression whereEx = plainSelect.getWhere();
+            System.out.println("Where expression is " + whereEx);
+            int index = op.getSchema().get("S.A");
+            System.out.println(index);
+            while(currentTuple != null){
+                visitor = new SelectExpressionVisitor(currentTuple, op.getSchema());
+                if (whereEx != null) {
+                    whereEx.accept(visitor);
+                    System.out.println(currentTuple.getDataAt(index));
+                    if (currentTuple.getDataAt(index) <= 3) {
+                        assertEquals(true, visitor.getResult());
+                    } else {
+                        assertEquals(false, visitor.getResult());
+                    }
+
+                }
+                System.out.println("select greaterThan successfully");
+                currentTuple = op.getNextTuple();
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
+
+    /**
+     * visit(AndExpression andExpression)
+     */
     @Test
     public void visit6() {
+        String tableName = "Sailors";
+        String tableFolder = "Samples/samples/input/db/data/";
+        File file = new File(tableFolder + tableName);
+
+        String statement = "SELECT * FROM Sailors S WHERE S.A > 3 and S.A < 5;";
+        CCJSqlParserManager parserManager = new CCJSqlParserManager();
+        try{
+            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
+            Operator op = new ScanOperator(plainSelect, file);
+            Catalog catalog = Catalog.getInstance();
+            System.out.println(catalog.getCurrentSchema());
+            Tuple currentTuple = op.getNextTuple();
+            FromItem fromItem = plainSelect.getFromItem();
+            System.out.println("From item is " + fromItem);
+            Expression whereEx = plainSelect.getWhere();
+            System.out.println("Where expression is " + whereEx);
+            int index = op.getSchema().get("S.A");
+            System.out.println(index);
+            while(currentTuple != null){
+                visitor = new SelectExpressionVisitor(currentTuple, op.getSchema());
+                if (whereEx != null) {
+                    whereEx.accept(visitor);
+                    System.out.println(currentTuple.getDataAt(index));
+                    if (currentTuple.getDataAt(index) > 3 && currentTuple.getDataAt(index) < 5) {
+                        assertEquals(true, visitor.getResult());
+                    } else {
+                        assertEquals(false, visitor.getResult());
+                    }
+
+                }
+                System.out.println("select expression successfully");
+                currentTuple = op.getNextTuple();
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Test
