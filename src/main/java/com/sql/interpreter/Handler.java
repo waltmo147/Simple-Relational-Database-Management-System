@@ -28,12 +28,14 @@ public class Handler {
             Statement statement;
             int ind = 0;
             while ((statement = parser.Statement()) != null) {
+                System.out.println(ind);
                 System.out.println("Read statement: " + statement);
                 Select select = (Select) statement;
                 PlainSelect plainSelect = (PlainSelect) select.getSelectBody();
                 System.out.println("Select body is " + select.getSelectBody());
                 Operator operator = constructQueryPlan(plainSelect);
                 operator.dump(ind);
+                ind++;
             }
         } catch (Exception e) {
             System.err.println("Exception occurred during parsing");
@@ -57,21 +59,20 @@ public class Handler {
         }
         opLeft = new ScanOperator(plainSelect, 0);
         System.out.println(opLeft.getSchema());
-        System.out.println("opLeft:");
-        opLeft.dump(1);
+//        System.out.println("opLeft:");
+//        opLeft.dump(1);
         for(int i = 1; i < tableCount; ++i){
-            System.out.println("i = " + i);
             Operator opRight = new ScanOperator(plainSelect, i);
-            System.out.println("opRight:");
-            opRight.dump(1);
+//            System.out.println("opRight:");
+//            opRight.dump(1);
             opLeft = new JoinOperator(opLeft, opRight, plainSelect);
             System.out.println(opLeft.getSchema());
-            System.out.println("opLeft after join:");
-            opLeft.dump(1);
+//            System.out.println("opLeft after join:");
+//            opLeft.dump(1);
             if(plainSelect.getWhere() != null){
                 opLeft = new SelectOperator(opLeft, plainSelect);
                 System.out.println("opLeft after select:");
-                opLeft.dump(1);
+//                opLeft.dump(1);
             }
         }
         if(tableCount == 1 && plainSelect.getWhere() != null){
@@ -82,7 +83,7 @@ public class Handler {
             opLeft = new SortOperator(opLeft, plainSelect);
             opLeft = new DuplicateEliminationOperator(opLeft);
         }
-        else if(plainSelect.getDistinct() != null){
+        else {
             opLeft = new SortOperator(opLeft, plainSelect);
         }
         return opLeft;

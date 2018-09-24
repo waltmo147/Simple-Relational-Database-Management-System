@@ -37,8 +37,7 @@ public class ScanOperator extends Operator{
         this.file = new File(Catalog.getInstance().getDataPath(tableName));
         initReaderPointer();
 
-        String fromItem = plainSelect.getFromItem().toString();
-        Catalog.getInstance().setAliases(fromItem);
+        Catalog.getInstance().setAliases(item);
         Catalog.getInstance().updateCurrentSchema(aliasName);
 
         this.schema = Catalog.getInstance().getCurrentSchema();

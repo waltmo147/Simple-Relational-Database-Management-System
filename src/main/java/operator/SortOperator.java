@@ -94,20 +94,23 @@ public class SortOperator extends Operator{
         public int compare(Tuple t1, Tuple t2) {
             // TODO Auto-generated method stub
             // sort tuples from the order from sql query.
-            for (int i = 0; i < order.size(); i++) {
-                String column = order.get(i).toString();
-                int index = schema.get(column);
-                if (t1.getDataAt(index) > t2.getDataAt(index)) {
-                    return 1;
-                }
-                if (t1.getDataAt(index) < t2.getDataAt(index)) {
-                    return -1;
+            if (order != null) {
+                for (int i = 0; i < order.size(); i++) {
+                    String column = order.get(i).toString();
+                    int index = schema.get(column);
+                    if (t1.getDataAt(index) > t2.getDataAt(index)) {
+                        return 1;
+                    }
+                    if (t1.getDataAt(index) < t2.getDataAt(index)) {
+                        return -1;
+                    }
                 }
             }
 
+
             // for tie breaker
             // sort tuples by the order of columns.
-            for (int i = 0; i < Catalog.getInstance().getCurrentSchema().size(); i++){
+            for (int i = 0; i < schema.size(); i++){
                 if (t1.getDataAt(i) > t2.getDataAt(i)) {
                     return 1;
                 }
