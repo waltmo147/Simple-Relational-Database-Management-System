@@ -16,6 +16,10 @@ public class Catalog {
     private Map<String, Integer> currentSchema = new HashMap<>();
     // store all the table-schema pairs
     private Map<String, Map<String, Integer>> schemas = new HashMap<>();
+    // input path
+    private String inputPath = Constants.SQLQURIES_PATH;
+    // output path
+    private String outputPath = Constants.OUTPUT_PATH;
 
 
     /**
@@ -107,14 +111,31 @@ public class Catalog {
      * @return output path string
      */
     public String getOutputPath() {
-        return Constants.OUTPUT_PATH;
+        return outputPath;
     }
 
     /**
      * @return sql queries file path
      */
     public String getSqlQueriesPath() {
-        return Constants.SQLQURIES_PATH;
+        return inputPath;
+    }
+
+    /**
+     * setter for input path
+     * @param inputPath
+     */
+    public void setInputPath(String inputPath) {
+        this.inputPath = inputPath;
+    }
+
+
+    /**
+     * setter for output path
+     * @param outputPath
+     */
+    public void setOutputPath(String outputPath) {
+        this.outputPath = outputPath;
     }
 
     /**
