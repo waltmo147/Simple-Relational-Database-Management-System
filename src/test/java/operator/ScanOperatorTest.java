@@ -19,7 +19,7 @@ public class ScanOperatorTest{
         Operator op = new ScanOperator(plainSelect, 0);
         Tuple tuple;
         while((tuple = op.getNextTuple()) != null){
-            System.out.println("read successfully");
+            System.out.println(tuple.toString());
         }
     }
 }

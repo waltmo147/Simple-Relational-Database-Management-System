@@ -7,6 +7,11 @@ import util.Catalog;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * JoinOperator
+ * it will inherit two tuple from two operators
+ * then execute cross production of the two tuples
+ */
 public class JoinOperator extends Operator{
     private Operator opLeft, opRight;
     private PlainSelect plainSelect;
@@ -14,6 +19,12 @@ public class JoinOperator extends Operator{
     Tuple outerTuple;
     Tuple innerTuple;
 
+    /**
+     * Init the schema of JoinOperator
+     * @param opLeft last operator of outer tuple
+     * @param opRight last operator of inner tuple
+     * @param plainSelect unused temporally
+     */
     public JoinOperator(Operator opLeft, Operator opRight, PlainSelect plainSelect){
         this.opLeft = opLeft;
         this.opRight = opRight;
