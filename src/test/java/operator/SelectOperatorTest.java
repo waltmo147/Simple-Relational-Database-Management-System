@@ -5,11 +5,8 @@ import net.sf.jsqlparser.parser.CCJSqlParserManager;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import org.junit.Test;
-
-import java.io.File;
-import java.io.StringReader;
-
 import static org.junit.Assert.*;
+import java.io.StringReader;
 
 public class SelectOperatorTest {
 

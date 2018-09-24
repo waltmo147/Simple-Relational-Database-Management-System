@@ -1,15 +1,10 @@
 package operator;
 
 import model.Tuple;
-import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.parser.CCJSqlParserManager;
-import net.sf.jsqlparser.statement.select.FromItem;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import org.junit.Test;
-import util.Catalog;
-
-import java.io.File;
 import java.io.StringReader;
 
 import static org.junit.Assert.assertEquals;
@@ -18,11 +13,6 @@ public class ProjectOperatorTest {
 
     @Test
     public void getNextTuple() throws Exception {
-
-        String tableName = "Boats";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT BT.E, BT.F FROM Boats AS BT WHERE BT.E = 9;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.
@@ -47,10 +37,6 @@ public class ProjectOperatorTest {
 
     @Test
     public void getSchema() throws Exception{
-        String tableName = "Boats";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Boats AS BT WHERE BT.E = 9;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.
