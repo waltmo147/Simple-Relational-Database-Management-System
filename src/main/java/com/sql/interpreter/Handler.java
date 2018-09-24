@@ -9,10 +9,17 @@ import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.Select;
 import util.Catalog;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.StringReader;
 
 public class Handler {
+
+    public static void init() {
+        String outputPath = Catalog.getInstance().getOutputPath();
+        new File(outputPath).mkdirs();
+    }
+
     public static void parseSql() {
         try {
             // try
