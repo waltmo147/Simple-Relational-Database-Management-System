@@ -12,7 +12,7 @@ public class SelectOperatorTest {
 
     @Test
     public void getNextTuple() throws Exception {
-        String statement = "SELECT * FROM Boats AS BT WHERE BT.E = 9;";
+        String statement = "SELECT * FROM Boats AS BT WHERE BT.E = 2;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
         Operator scanOp = new ScanOperator(plainSelect, 0);
@@ -21,7 +21,8 @@ public class SelectOperatorTest {
 
         Tuple tuple = selectOp.getNextTuple();
         while(tuple != null){
-            assertEquals(9, tuple.getDataAt(1));
+            assertEquals(2, tuple.getDataAt(1));
+            System.out.println(tuple);
             tuple = selectOp.getNextTuple();
         }
     }

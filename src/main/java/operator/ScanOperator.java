@@ -46,8 +46,7 @@ public class ScanOperator extends Operator{
         this.file = new File(Catalog.getInstance().getDataPath(tableName));
         initReaderPointer();
 
-        String fromItem = plainSelect.getFromItem().toString();
-        Catalog.getInstance().setAliases(fromItem);
+        Catalog.getInstance().setAliases(item);
         Catalog.getInstance().updateCurrentSchema(aliasName);
 
         this.schema = Catalog.getInstance().getCurrentSchema();
@@ -111,13 +110,6 @@ public class ScanOperator extends Operator{
 		}catch(IOException e){
 			System.out.println("Files not found.");
 		}
-    }
-
-    /**
-     * get the next tuple of the operator.
-     */
-    @Override
-    public void dump(int i){
     }
 
     /**
