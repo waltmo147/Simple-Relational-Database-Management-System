@@ -49,11 +49,22 @@ public class Handler {
             tableCount = 1 + plainSelect.getJoins().size();
         }
         opLeft = new ScanOperator(plainSelect, 0);
+        System.out.println(opLeft.getSchema());
+        System.out.println("opLeft:");
+        opLeft.dump(1);
         for(int i = 1; i < tableCount; ++i){
+            System.out.println("i = " + i);
             Operator opRight = new ScanOperator(plainSelect, i);
+            System.out.println("opRight:");
+            opRight.dump(1);
             opLeft = new JoinOperator(opLeft, opRight, plainSelect);
+            System.out.println(opLeft.getSchema());
+            System.out.println("opLeft after join:");
+            opLeft.dump(1);
             if(plainSelect.getWhere() != null){
                 opLeft = new SelectOperator(opLeft, plainSelect);
+                System.out.println("opLeft after select:");
+                opLeft.dump(1);
             }
         }
         if(tableCount == 1 && plainSelect.getWhere() != null){

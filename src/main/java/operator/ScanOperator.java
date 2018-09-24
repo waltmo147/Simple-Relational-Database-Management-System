@@ -105,13 +105,6 @@ public class ScanOperator extends Operator{
     }
 
     /**
-     * get the next tuple of the operator.
-     */
-    @Override
-    public void dump(int i){
-    }
-
-    /**
      * get the schema
      */
     @Override

@@ -4,6 +4,7 @@ import java.io.FileReader;
 import net.sf.jsqlparser.parser.CCJSqlParser;
 import net.sf.jsqlparser.statement.Statement;
 import net.sf.jsqlparser.statement.select.Select;
+import util.Catalog;
 
 /**
  * Example class for getting started with JSQLParser. Reads SQL statements from
@@ -17,6 +18,12 @@ public class App {
 	private static final String queriesFile = "Samples/samples/input/queries.sql";
 
 	public static void main(String[] args) {
+        Handler handler = new Handler();
+        if (args != null || args.length != 0) {
+            Catalog.getInstance().setInputPath(args[0]);
+            Catalog.getInstance().setOutputPath(args[1]);
+            handler.init();
+        }
 		try {
 			// try
 			CCJSqlParser parser = new CCJSqlParser(new FileReader(queriesFile));
