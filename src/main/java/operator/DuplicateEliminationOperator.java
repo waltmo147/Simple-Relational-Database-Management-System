@@ -66,16 +66,6 @@ public class DuplicateEliminationOperator extends Operator{
     }
 
     /**
-     * for debugging, get all the tuples at once and put them in a file.
-     * @param i the index of the output file.
-     */
-    @Override
-    public void dump(int i) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
      * get the schema
      */
     @Override
