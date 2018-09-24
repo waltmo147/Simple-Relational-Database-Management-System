@@ -113,10 +113,6 @@ public class SelectExpressionVisitorTest {
      */
     @Test
     public void visit2() {
-        String tableName = "Sailors";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Sailors S WHERE S.A > 3;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
@@ -157,10 +153,6 @@ public class SelectExpressionVisitorTest {
      */
     @Test
     public void visit3() {
-        String tableName = "Sailors";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Sailors S WHERE S.A >= 3;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
@@ -202,10 +194,6 @@ public class SelectExpressionVisitorTest {
      */
     @Test
     public void visit4() {
-        String tableName = "Sailors";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Sailors S WHERE S.A < 3;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
@@ -246,10 +234,6 @@ public class SelectExpressionVisitorTest {
      */
     @Test
     public void visit5() {
-        String tableName = "Sailors";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Sailors S WHERE S.A <= 3;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
@@ -285,16 +269,11 @@ public class SelectExpressionVisitorTest {
         }
     }
 
-
     /**
      * visit(AndExpression andExpression)
      */
     @Test
     public void visit6() {
-        String tableName = "Sailors";
-        String tableFolder = "Samples/samples/input/db/data/";
-        File file = new File(tableFolder + tableName);
-
         String statement = "SELECT * FROM Sailors S WHERE S.A > 3 and S.A < 5;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
         try{
@@ -328,13 +307,5 @@ public class SelectExpressionVisitorTest {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    @Test
-    public void visit7() {
-    }
-
-    @Test
-    public void visit8() {
     }
 }

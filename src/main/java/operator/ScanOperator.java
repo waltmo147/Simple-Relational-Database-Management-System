@@ -5,17 +5,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.io.IOException;
+import net.sf.jsqlparser.statement.select.PlainSelect;
 
 import model.Tuple;
-import net.sf.jsqlparser.statement.select.PlainSelect;
 import util.Catalog;
 
+/**
+ * ScanOperator
+ * Read the table from disk and fetch a tuple
+ */
 public class ScanOperator extends Operator{
     private Operator op;
     private File file;
     private RandomAccessFile readerPointer;
     private Map<String, Integer> schema;
 
+    /**
+     * 
+     * @param plainSelect is the statement of sql
+     * @param tableIndex is the index of the table in FROM section, start by 0
+     */
     public ScanOperator(PlainSelect plainSelect, int tableIndex){
         this.op = null;
         

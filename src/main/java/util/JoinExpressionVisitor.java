@@ -11,7 +11,8 @@ import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.SubSelect;
 
 /**
- * this class handles the created join trees.
+ * This visitor help extract related expression
+ * accroding to the key of a schema hash map
  * @author xl664 Xinhe Li
  *
  */
@@ -21,8 +22,7 @@ public class JoinExpressionVisitor implements ExpressionVisitor {
 	private Map<String, Integer> schemaMap;
 	
 	/**
-	 * A visitor help extract related expression
-	 * accroding to the key of a schema hash map
+	 * Constructor give the schema of current tuple
 	 * @param Map<String, Integer>
 	 */
 	public JoinExpressionVisitor(Map<String, Integer> schemaMap) {
