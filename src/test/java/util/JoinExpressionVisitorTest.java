@@ -61,31 +61,34 @@ public class JoinExpressionVisitorTest{
     }
 
     @Test
-    public void testWhereAndJoin(){
+    /*
+    *          select
+    *            |
+    *           join
+    *        /       \
+    *      select    scan
+    *        |  
+    *       join
+    *      /    \
+    *    scan  scan
+    */
+    public void testWhereAndJoin() throws Exception{
         String statement =  "SELECT * FROM Sailors, Reserves, Boats WHERE Reserves.H = Boats.D And Sailors.A = Reserves.G;";
         CCJSqlParserManager parserManager = new CCJSqlParserManager();
-        try{
-            PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
-            Operator op1 = new ScanOperator(plainSelect, 0);
-            Operator op2 = new ScanOperator(plainSelect, 1);
-            Operator op3 = new JoinOperator(op1, op2, plainSelect);
-            Operator op4 = new SelectOperator(op3, plainSelect);
-            Operator op5 = new ScanOperator(plainSelect, 2);
-            Operator op6 = new JoinOperator(op4, op5, plainSelect);
-            Operator op7 = new SelectOperator(op6, plainSelect);
+        PlainSelect plainSelect = (PlainSelect) ((Select) parserManager.parse(new StringReader(statement))).getSelectBody();
 
-            Tuple tuple = op7.getNextTuple();
-            while(tuple!=null){
-                tuple = op7.getNextTuple();
-            }
-        }catch(Exception e){
-            e.printStackTrace();
+        Operator op1 = new ScanOperator(plainSelect, 0);
+        Operator op2 = new ScanOperator(plainSelect, 1);
+        Operator op3 = new JoinOperator(op1, op2, plainSelect);
+        Operator op4 = new SelectOperator(op3, plainSelect);
+
+        Operator op5 = new ScanOperator(plainSelect, 2);
+        Operator op6 = new JoinOperator(op4, op5, plainSelect);
+        Operator op7 = new SelectOperator(op6, plainSelect);
+
+        Tuple tuple = op7.getNextTuple();
+        while(tuple!=null){
+            tuple = op7.getNextTuple();
         }
     }
-
-    private File getTargetFileFromString(String item){
-        String[] strs = item.split("\\s+");
-        return new File(Catalog.getInstance().getDataPath(strs[0]));
-    }
-    
 }
