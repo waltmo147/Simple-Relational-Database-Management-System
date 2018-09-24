@@ -26,11 +26,12 @@ public class ProjectOperator extends Operator {
         if (selectItems.get(0).toString() == "*") {
             currentSchema = operator.getSchema();
         } else {
-            Map<String, Integer> oldSchema = operator.getSchema();
             currentSchema = new HashMap<>();
+            int i = 0;
             for (SelectItem selectItem : selectItems) {
                 currentSchema.put(selectItem.toString(),
-                        oldSchema.get(selectItem.toString()));
+                        i);
+                i++;
             }
         }
     }
@@ -43,9 +44,8 @@ public class ProjectOperator extends Operator {
         Tuple next = prevOp.getNextTuple();
         if (next != null && currentSchema != prevOp.getSchema()) {
             long[] data = new long[currentSchema.size()];
-            int i=0;
-            for (Integer ind: currentSchema.values()) {
-                data[i] = next.getDataAt(ind);
+            for (Map.Entry<String, Integer> entry : currentSchema.entrySet()){
+                data[entry.getValue()] = next.getDataAt(prevOp.getSchema().get(entry.getKey()));
             }
             next = new Tuple(data);
         }
