@@ -2,6 +2,10 @@ package model;
 
 import java.util.Arrays;
 
+/**
+ * Tuple class
+ * Created by Yufu Mo
+ */
 public class Tuple {
     private long[] data; // string array to store data
 
