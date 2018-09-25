@@ -13,6 +13,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.StringReader;
 
+/**
+ * Handler class to parse sql, construct query plan and handle initialization
+ * Created by Yufu Mo
+ */
 public class Handler {
 
     public static void init() {
