@@ -72,8 +72,6 @@ public class Tuple {
 
     @Override
     public String toString() {
-        return "Tuple{" +
-                "data=" + Arrays.toString(data) +
-                '}';
+        return Arrays.toString(data).substring(1, Arrays.toString(data).length() - 1);
     }
 }

@@ -41,11 +41,26 @@ public class Handler {
         }
     }
 
-     /**
-     * consturct a left deep join query plan
-     * @param plainSelect
-     * @return
-     */
+    /**
+    * consturct a left deep join query plan
+    *
+    *           distinct
+    *              |
+    *             sort
+    *              |
+    *            select
+    *              |
+    *             join
+    *           /      \
+    *        select   scan
+    *          |  
+    *         join
+    *        /    \
+    *      scan  scan
+
+    * @param plainSelect
+    * @return
+    */
     public static Operator constructQueryPlan(PlainSelect plainSelect){
         int tableCount;
         Operator opLeft;
