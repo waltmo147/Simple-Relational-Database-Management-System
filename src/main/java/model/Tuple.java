@@ -74,6 +74,6 @@ public class Tuple {
 
     @Override
     public String toString() {
-        return Arrays.toString(data).substring(1, Arrays.toString(data).length() - 1);
+        return Arrays.toString(data).substring(1, Arrays.toString(data).length() - 1).replaceAll("\\s", "");
     }
 }
