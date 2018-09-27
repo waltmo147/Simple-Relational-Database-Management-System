@@ -20,6 +20,10 @@ public class Handler {
     public static void init() {
         String outputPath = Catalog.getInstance().getOutputPath();
         new File(outputPath).mkdirs();
+        final File[] files = new File(outputPath).listFiles();
+        for(File f : files){
+            f.delete();
+        }
     }
 
     public static void parseSql() {
@@ -45,11 +49,26 @@ public class Handler {
         }
     }
 
-     /**
-     * consturct a left deep join query plan
-     * @param plainSelect
-     * @return
-     */
+    /**
+    * consturct a left deep join query plan
+    *
+    *           distinct
+    *              |
+    *             sort
+    *              |
+    *            select
+    *              |
+    *             join
+    *           /      \
+    *        select   scan
+    *          |  
+    *         join
+    *        /    \
+    *      scan  scan
+
+    * @param plainSelect
+    * @return
+    */
     public static Operator constructQueryPlan(PlainSelect plainSelect){
         int tableCount;
         Operator opLeft;

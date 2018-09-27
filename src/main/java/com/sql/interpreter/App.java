@@ -3,11 +3,8 @@ package com.sql.interpreter;
 import util.Catalog;
 
 /**
- * Example class for getting started with JSQLParser. Reads SQL statements from
- * a file and prints them to screen; then extracts SelectBody from each query
- * and also prints it to screen.
- * 
- * @author Lucja Kot
+ * Read a local sql file which contains several queries
+ * Run line by line and output the results into seperated files
  */
 public class App {
 	public static void main(String[] args) {
