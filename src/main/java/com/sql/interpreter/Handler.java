@@ -16,6 +16,10 @@ public class Handler {
     public static void init() {
         String outputPath = Catalog.getInstance().getOutputPath();
         new File(outputPath).mkdirs();
+        final File[] files = new File(outputPath).listFiles();
+        for(File f : files){
+            f.delete();
+        }
     }
 
     public static void parseSql() {

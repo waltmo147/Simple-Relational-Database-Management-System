@@ -25,7 +25,6 @@ public class Tuple {
         data = new long[length];
     }
 
-
     /**
      * Overload constructor with data input
      * @param data
@@ -68,7 +67,6 @@ public class Tuple {
 //    public int hashCode() {
 //        return Arrays.hashCode(data);
 //    }
-
 
     @Override
     public String toString() {
